@@ -5,13 +5,14 @@
   var HOME=[26.281493753195598,72.98599529580494], DHABA=[26.221253721138172,72.97233283694219], VENUE=[26.2224344,72.968648];
   var mapEl=document.getElementById('livemap'); if(!mapEl||!window.L) return;
 
-  var map=L.map('livemap',{zoomControl:false,attributionControl:true,scrollWheelZoom:false});
+  var map=L.map('livemap',{zoomControl:false,attributionControl:false,scrollWheelZoom:false});
+  L.control.attribution({prefix:false,position:'bottomright'}).addTo(map);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
   
-  function pin(n,label,cls){return L.divIcon({className:'',html:'<div class="pinwrap '+(cls||'')+'"><div class="pin">'+n+'</div><div class="pinlbl">'+label+'</div></div>',iconSize:[120,60],iconAnchor:[60,17]});}
-  L.marker(HOME,{icon:pin('<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 2v20M2 12h20M12 2h8M12 22H4M2 12v8M22 12V4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"/><circle cx="7" cy="7" r="1.3" fill="currentColor"/><circle cx="17" cy="7" r="1.3" fill="currentColor"/><circle cx="7" cy="17" r="1.3" fill="currentColor"/><circle cx="17" cy="17" r="1.3" fill="currentColor"/></svg>','१ प्रारंभ · निवास C-11','start'),zIndexOffset:500}).addTo(map);
+  function pin(n,label,cls,up){var h=up?'<div class="pinlbl">'+label+'</div><div class="pin">'+n+'</div>':'<div class="pin">'+n+'</div><div class="pinlbl">'+label+'</div>';return L.divIcon({className:'',html:'<div class="pinwrap '+(cls||'')+(up?' up':'')+'">'+h+'</div>',iconSize:[150,60],iconAnchor:[75,up?43:17]});}
+  L.marker(HOME,{icon:pin('<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3v18M3 12h18M12 3h7M21 12v7M12 21H5M3 12V5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/><circle cx="7.5" cy="7.5" r="1.4" fill="currentColor"/><circle cx="16.5" cy="7.5" r="1.4" fill="currentColor"/><circle cx="7.5" cy="16.5" r="1.4" fill="currentColor"/><circle cx="16.5" cy="16.5" r="1.4" fill="currentColor"/></svg>','१ प्रारंभ · निवास C-11','start'),zIndexOffset:500}).addTo(map);
   L.marker(DHABA,{icon:pin('<span class="em">🐎</span>','२ बारात एकत्र · जय भवानी ढाबा')}).addTo(map);
-  L.marker(VENUE,{icon:pin('<span class="em">🤝</span>','३ हस्तमिलाप · कस्तूरी ऑर्किड')}).addTo(map);
+  L.marker(VENUE,{icon:pin('<span class="em">🤝</span>','३ हस्तमिलाप · कस्तूरी ऑर्किड','',true),zIndexOffset:600}).addTo(map);
   var route=L.polyline([HOME,DHABA,VENUE],{color:'#B8892E',weight:3,dashArray:'5 7',opacity:.8}).addTo(map);
   // real road route (OSRM); falls back to the straight dotted line
   fetch('https://router.project-osrm.org/route/v1/driving/'+[HOME,DHABA,VENUE].map(function(p){return p[1]+','+p[0];}).join(';')+'?overview=full&geometries=geojson')
