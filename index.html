@@ -54,8 +54,11 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .mapwrap{position:relative;margin-top:14px;border:1px solid var(--gold-soft);outline:1px solid var(--gold-soft);outline-offset:3px}
 .livemap{height:min(62vw,300px);width:100%;background:#EDE9DD}
 .leaflet-container{font-family:var(--body)}
-.pinwrap{display:flex;flex-direction:column;align-items:center;width:150px}
-.pinwrap.up .pinlbl{margin:0 0 3px}
+.pinwrap{display:flex;flex-direction:column;align-items:center}
+.pinrow{display:flex;align-items:center;gap:5px;width:200px}
+.pinrow.l{justify-content:flex-end}
+.pinrow.r{justify-content:flex-start}
+.pinrow .pinlbl{margin:0}
 .livemap .leaflet-control-attribution{font-size:9px;background:rgba(251,248,239,.7);color:var(--olive-soft)}
 .livemap .leaflet-control-attribution a{color:var(--olive-soft)}
 .pin{width:34px;height:34px;border-radius:50%;background:var(--card);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font:600 16px var(--body);color:var(--olive);box-shadow:0 2px 6px rgba(62,74,31,.25)}
