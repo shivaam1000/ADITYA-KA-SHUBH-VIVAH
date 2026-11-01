@@ -120,6 +120,19 @@
     requestAnimationFrame(frame);
   })();
 
+  // tap to go full screen, ✕ to come back
+  (function(){
+    var wrap=mapEl.parentNode, closeBtn=document.getElementById('mapclose'), hint=document.getElementById('maphint');
+    function resized(){ map.invalidateSize(); try{dispatchEvent(new Event('resize'));}catch(e){} }
+    function open(){ if(wrap.classList.contains('full')) return; wrap.classList.add('full'); document.body.classList.add('mapfull'); closeBtn.hidden=false; setTimeout(resized,50); try{history.pushState({mapfull:1},'');}catch(e){} }
+    function close(){ if(!wrap.classList.contains('full')) return; wrap.classList.remove('full'); document.body.classList.remove('mapfull'); closeBtn.hidden=true; setTimeout(resized,50); }
+    map.on('click',function(){ if(!wrap.classList.contains('full')) open(); });
+    closeBtn.addEventListener('click',function(){ close(); try{ if(history.state&&history.state.mapfull) history.back(); }catch(e){} });
+    addEventListener('popstate',function(){ close(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') close(); });
+    setTimeout(function(){ if(hint) hint.style.opacity='0'; if(hint) hint.style.transition='opacity 1s'; },6000);
+  })();
+
   var cap=document.getElementById('mapcap'), dist=document.getElementById('mapdist'), last=null;
   function km(a,b){var R=6371,dLat=(b[0]-a[0])*Math.PI/180,dLng=(b[1]-a[1])*Math.PI/180,s=Math.sin(dLat/2)**2+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLng/2)**2;return 2*R*Math.asin(Math.sqrt(s));}
   function ago(t){var s=Math.round((Date.now()-t)/1000); if(s<15)return 'अभी'; if(s<60)return s+' सेकंड पहले'; var m=Math.round(s/60); return m<60? m+' मिनट पहले' : Math.round(m/60)+' घंटे पहले';}
