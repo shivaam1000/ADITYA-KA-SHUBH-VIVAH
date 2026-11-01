@@ -32,18 +32,19 @@
   var follow=true; map.on('dragstart zoomstart',function(e){ if(e.originalEvent) follow=false; });
   var recenter=document.getElementById('recenter'); if(recenter) recenter.onclick=function(){follow=true; if(last) map.setView([last.lat,last.lng],Math.max(map.getZoom(),15));};
 
-  // real fireworks footage over the map (screen blend), pinned to the viewport, under the pins
+  // real fireworks footage BEHIND the map tiles (tiles screen-blend on top), so it never has to follow drags
   (function(){
     var vid=document.getElementById('sky'); if(!vid) return;
     var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
     var saveData=navigator.connection&&navigator.connection.saveData;
-    var pane=map.createPane('skyPane'); pane.style.zIndex=450; pane.style.pointerEvents='none'; pane.appendChild(vid);
-    function fit(){var r=mapEl.getBoundingClientRect();vid.style.width=r.width+'px';vid.style.height=r.height+'px';var p=map.containerPointToLayerPoint([0,0]);L.DomUtil.setPosition(vid,p);}
-    map.on('move zoom viewreset resize',fit); addEventListener('resize',fit); fit();
-    map.on('zoomstart',function(){vid.style.opacity='0';}); map.on('zoomend',function(){fit();vid.style.opacity='1';});
     if(reduce||saveData){ vid.removeAttribute('autoplay'); return; }
-    var p=vid.play(); if(p&&p.catch) p.catch(function(){});
-    document.addEventListener('visibilitychange',function(){ if(document.hidden) vid.pause(); else { var q=vid.play(); if(q&&q.catch) q.catch(function(){}); } });
+    vid.muted=true; vid.setAttribute('muted',''); vid.setAttribute('playsinline',''); vid.setAttribute('webkit-playsinline','');
+    function tryPlay(){ var p=vid.play(); if(p&&p.catch) p.catch(function(){}); }
+    tryPlay();
+    var kick=function(){ if(vid.paused) tryPlay(); };
+    ['touchstart','touchend','click','scroll'].forEach(function(ev){ addEventListener(ev,kick,{passive:true}); });
+    vid.addEventListener('canplay',function(){ if(vid.paused) tryPlay(); });
+    document.addEventListener('visibilitychange',function(){ if(document.hidden) vid.pause(); else tryPlay(); });
   })();
 
   // tap to go full screen, ✕ to come back
