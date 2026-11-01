@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Baraat Live · आदित्य & खुशबू</title>
+<meta name="description" content="आदित्य & खुशबू — बारात की live location और updates">
+<meta property="og:title" content="Baraat Live · आदित्य & खुशबू">
+<meta property="og:description" content="बारात की live location और हर update यहाँ">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F7F1E3'/%3E%3Ccircle cx='32' cy='32' r='14' fill='%235B6B2F'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ivory:#F7F1E3; --card:#FBF7EC; --olive:#5B6B2F; --olive-deep:#3E4A1F; --olive-soft:#8A9560;
+  --gold:#B8962E; --gold-soft:#E7D8A6; --live:#8C2D2D;
+  --display:'Tiro Devanagari Hindi',serif; --body:'Mukta','Noto Sans Devanagari',system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ivory);min-height:100%}
+body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:520px;margin:0 auto}
+.frame{border:1px solid var(--gold-soft);outline:1px solid var(--gold-soft);outline-offset:4px;margin:14px 2px 0;padding:6px 10px 22px}
+.top{text-align:center;padding:22px 0 10px}
+.ganesh{font-family:var(--display);color:var(--gold);font-size:15px;letter-spacing:.04em;margin:0}
+.names{font-family:var(--display);font-weight:400;font-size:34px;line-height:1.25;color:var(--olive);margin:10px 0 0;text-wrap:balance}
+.names .amp{color:var(--gold);font-size:24px;margin:0 8px}
+.event{margin:6px 0 0;font-size:14px;color:var(--olive-soft);letter-spacing:.02em}
+.hr{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px 0}
+.status{background:var(--card);border:1px solid var(--gold-soft);padding:18px 18px 16px;margin:8px 0}
+.live{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--live)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--live);box-shadow:0 0 0 0 rgba(140,45,45,.5);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(140,45,45,0)}100%{box-shadow:0 0 0 0 rgba(140,45,45,0)}}
+@media(prefers-reduced-motion:reduce){.live i{animation:none}}
+.label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--olive-soft);margin:14px 0 2px}
+.where{font-family:var(--display);font-size:26px;line-height:1.3;color:var(--olive);margin:0;overflow-wrap:anywhere}
+.note{margin:6px 0 0}
+.stamp{margin:10px 0 0;font-size:13px;color:var(--olive-soft);font-variant-numeric:tabular-nums}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--olive);color:var(--ivory);padding:13px 18px;font:600 16px var(--body);text-decoration:none;width:100%;margin-top:14px}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.btn.off{opacity:.45;pointer-events:none}
+h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);margin:22px 0 6px}
+.tl{list-style:none;margin:0;padding:0;border-left:1px solid var(--gold-soft)}
+.tl li{position:relative;padding:0 0 16px 18px}
+.tl li::before{content:"";position:absolute;left:-5px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--gold);border:2px solid var(--ivory)}
+.tl time{display:block;font-size:12px;color:var(--olive-soft);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.tl p{margin:2px 0 0;overflow-wrap:anywhere}
+.empty{color:var(--olive-soft);font-style:italic;margin:4px 0}
+.foot{text-align:center;margin-top:28px;font-family:var(--display);color:var(--gold);font-size:15px}
+.foot small{display:block;font-family:var(--body);color:var(--olive-soft);font-size:12px;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="frame" id="app">
+<header class="top"><p class="ganesh">॥ श्री गणेशाय नमः ॥</p>
+<h1 class="names">आदित्य<span class="amp">&amp;</span>खुशबू</h1>
+<p class="event">शुभ विवाह · 21 नवम्बर 2026 · जोधपुर</p></header>
+<div class="hr"></div>
+<section class="status"><span class="live"><i></i>Baraat Live</span>
+<p class="label">बारात अभी यहाँ है</p><p class="where" id="where">बारात अभी रवाना नहीं हुई</p>
+<p class="note" id="note">बारात रवाना होते ही यहाँ live location और updates मिलते रहेंगे।</p>
+<p class="stamp" id="stamp" hidden></p>
+<a class="btn off" id="map" href="#" rel="noopener">📍 Live location जल्द ही</a>
+</section>
+<h2>Updates</h2>
+<div id="updates"><p class="empty">अभी कोई update नहीं — बारात के समय यहाँ देखते रहें।</p></div>
+<p class="foot">स्वागताकांक्षी<small>बिड़ला परिवार · यह page अपने आप update होता रहता है</small></p>
+</div></div>
+<script>
+(function(){
+  // Google Sheet that feeds this page. Fill SHEET_ID once the sheet exists (share: anyone with link, viewer).
+  var SHEET_ID = "";
+  var SHEET_NAME = "Sheet1";
+  if(!SHEET_ID) return;
+  var URL = "https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/gviz/tq?tqx=out:csv&sheet="+encodeURIComponent(SHEET_NAME)+"&t=";
+  function parseCSV(s){
+    var rows=[],row=[],f="",q=false;
+    for(var i=0;i<s.length;i++){var c=s[i];
+      if(q){ if(c=='"'){ if(s[i+1]=='"'){f+='"';i++;} else q=false; } else f+=c; }
+      else if(c=='"')q=true; else if(c==','){row.push(f);f="";}
+      else if(c=='\n'){row.push(f);rows.push(row);row=[];f="";}
+      else if(c!='\r')f+=c; }
+    if(f.length||row.length){row.push(f);rows.push(row);}
+    return rows;
+  }
+  function esc(t){return String(t==null?"":t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  function safeUrl(u){u=String(u||"").trim();return /^https?:\/\//i.test(u)?u:"";}
+  function apply(rows){
+    var get=function(r){return (rows[r]||[])[1]||"";};
+    var where=get(0).trim(), note=get(1).trim(), map=safeUrl(get(2)), stamp=get(3).trim();
+    if(where)document.getElementById("where").textContent=where;
+    var n=document.getElementById("note"); n.textContent=note; n.hidden=!note;
+    var s=document.getElementById("stamp"); s.textContent=stamp?"आख़िरी update · "+stamp:""; s.hidden=!stamp;
+    var m=document.getElementById("map");
+    if(map){m.href=map;m.target="_blank";m.className="btn";m.textContent="📍 Google Maps पर live location देखें";}
+    else{m.removeAttribute("href");m.className="btn off";m.textContent="📍 Live location जल्द ही";}
+    var ups=[];
+    for(var i=6;i<rows.length;i++){var t=(rows[i][0]||"").trim(),msg=(rows[i][1]||"").trim(); if(msg)ups.push({t:t,m:msg});}
+    ups.reverse(); // newest first (sheet is filled top to bottom)
+    document.getElementById("updates").innerHTML = ups.length
+      ? '<ul class="tl">'+ups.map(function(u){return '<li><time>'+esc(u.t)+'</time><p>'+esc(u.m)+'</p></li>';}).join("")+'</ul>'
+      : '<p class="empty">अभी कोई update नहीं — बारात के समय यहाँ देखते रहें।</p>';
+  }
+  function load(){
+    fetch(URL+Date.now(),{cache:"no-store"}).then(function(r){return r.text();}).then(function(t){apply(parseCSV(t));}).catch(function(){});
+  }
+  load(); setInterval(load,30000);
+  document.addEventListener("visibilitychange",function(){if(!document.hidden)load();});
+})();
+</script>
+</body>
+</html>
