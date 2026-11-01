@@ -52,7 +52,7 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .where{font-family:var(--display);font-size:21px;line-height:1.3;color:var(--olive);margin:0;overflow-wrap:anywhere}
 .note{margin:6px 0 0}
 .mapwrap{position:relative;margin-top:14px;border:1px solid var(--gold-soft);outline:1px solid var(--gold-soft);outline-offset:3px}
-.livemap{height:min(62vw,300px);width:100%;background:#EDE9DD}
+.livemap{height:min(62vw,300px);width:100%}
 .leaflet-container{font-family:var(--body)}
 .pinwrap{display:flex;flex-direction:column;align-items:center}
 .pinrow{display:flex;align-items:flex-end;gap:4px;width:220px}
@@ -68,11 +68,15 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .pinwrap.ico .pin{width:36px;height:36px}
 .pinwrap.ico .pin svg,.pinwrap.start .pin svg{width:24px;height:24px}
 .pinwrap.dot .pin{width:18px;height:18px;border-width:3px;background:var(--gold-soft);box-shadow:0 1px 4px rgba(62,74,31,.3)}
-.pinlbl{margin-top:3px;background:var(--card);border:1px solid var(--gold-soft);color:var(--olive-deep);font:600 11px var(--body);padding:1px 7px;white-space:nowrap;border-radius:3px}
+.pinlbl{margin-top:3px;background:rgba(251,248,239,.95);border:1px solid var(--gold);color:var(--olive-deep);font:600 11px var(--body);padding:1px 7px;white-space:nowrap;border-radius:3px}
 .pinwrap.live .pin{width:44px;height:44px;background:var(--live);color:#fff;border-color:var(--ivory);font-size:12px;box-shadow:0 0 0 0 rgba(140,45,45,.5);animation:ring 1.8s infinite}
 @keyframes ring{70%{box-shadow:0 0 0 14px rgba(140,45,45,0)}100%{box-shadow:0 0 0 0 rgba(140,45,45,0)}}
 @media(prefers-reduced-motion:reduce){.pinwrap.live .pin{animation:none}}
-.livemap .leaflet-tile-pane{filter:sepia(.35) saturate(.75) brightness(1.03)}
+.livemap{background:#141a20}
+.livemap .leaflet-tile-pane{filter:brightness(.9) sepia(.25) hue-rotate(-10deg) saturate(.9)}
+.fw{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:450;mix-blend-mode:screen}
+.livemap .leaflet-control-attribution{background:rgba(20,26,32,.6)!important;color:#9aa3ad!important}
+.livemap .leaflet-control-attribution a{color:#9aa3ad!important}
 .fitall{position:absolute;right:8px;bottom:8px;z-index:500;height:34px;padding:0 10px;border-radius:17px;border:1px solid var(--gold);background:var(--card);color:var(--olive);font:600 12px var(--body);cursor:pointer}
 .recenter{position:absolute;left:8px;bottom:8px;z-index:500;width:34px;height:34px;border-radius:50%;border:1px solid var(--gold);background:var(--card);color:var(--olive);font-size:18px;cursor:pointer}
 .mapcap{margin:10px 0 0;font-size:13px;color:var(--olive-soft)}
@@ -172,7 +176,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <section class="status"><span class="live"><i></i>Baraat Live</span>
 <p class="label">बारात अभी यहाँ है</p><p class="where" id="where">बारात अभी प्रस्थान नहीं हुई है</p>
 <p class="note" id="note">बारात प्रस्थान करते ही यहाँ live location और updates मिलते रहेंगे।</p>
-<div class="mapwrap"><div id="livemap" class="livemap"></div><button type="button" class="recenter" id="recenter" title="बारात पर लौटें">◎</button><button type="button" class="fitall" id="fitall">पूरा मार्ग</button></div>
+<div class="mapwrap"><div id="livemap" class="livemap"></div><canvas id="fw" class="fw" aria-hidden="true"></canvas><button type="button" class="recenter" id="recenter" title="बारात पर लौटें">◎</button><button type="button" class="fitall" id="fitall">पूरा मार्ग</button></div>
 <p class="mapcap" id="mapcap">बारात प्रस्थान पर यहाँ चलती हुई दिखेगी</p>
 <p class="mapdist" id="mapdist"></p>
 <p class="stamp" id="stamp" hidden></p>
