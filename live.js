@@ -5,7 +5,7 @@
   var HOME=[26.281493753195598,72.98599529580494], DHABA=[26.221253721138172,72.97233283694219], VENUE=[26.2224344,72.968648];
   var mapEl=document.getElementById('livemap'); if(!mapEl||!window.L) return;
 
-  var map=L.map('livemap',{zoomControl:false,attributionControl:false,scrollWheelZoom:false});
+  var map=L.map('livemap',{zoomControl:false,attributionControl:false,scrollWheelZoom:false,maxZoom:16,minZoom:11});
   L.control.attribution({prefix:false,position:'bottomright'}).addTo(map); window.baraatMap=map;
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
   
@@ -30,7 +30,7 @@
   var trail=L.polyline([],{color:'#F2E3B3',weight:4,opacity:.9}).addTo(map);
   var acc=L.circle(HOME,{radius:0,color:'#F2E3B3',weight:1,fillOpacity:.1});
   var follow=true; map.on('dragstart zoomstart',function(e){ if(e.originalEvent) follow=false; });
-  var recenter=document.getElementById('recenter'); if(recenter) recenter.onclick=function(){follow=true; if(last&&last.lat) map.setView([last.lat,last.lng],Math.max(map.getZoom(),15)); else map.setView(HOME,15);};
+  var recenter=document.getElementById('recenter'); if(recenter) recenter.onclick=function(){follow=true; if(last&&last.lat) map.setView([last.lat,last.lng],Math.max(map.getZoom(),14)); else map.setView(HOME,14);};
 
   // real fireworks footage as a Leaflet video overlay: above tiles, below pins, moves with the map
   (function(){
@@ -39,7 +39,7 @@
     var tap=document.getElementById('skytap');
     var B=L.latLngBounds([[26.195,72.905],[26.315,73.055]]);
     if(reduce||saveData){ L.imageOverlay('assets/sky.jpg',B,{opacity:.8,interactive:false}).addTo(map); return; }
-    var ov=L.videoOverlay('assets/sky.mp4',B,{opacity:.78,autoplay:true,muted:true,loop:true,playsInline:true,interactive:false,zIndex:1}).addTo(map);
+    var ov=L.videoOverlay('assets/sky.mp4?v=2',B,{opacity:.78,autoplay:true,muted:true,loop:true,playsInline:true,interactive:false,zIndex:1}).addTo(map);
     var vid=ov.getElement(); if(!vid){ return; }
     vid.setAttribute('poster','assets/sky.jpg'); vid.setAttribute('webkit-playsinline',''); vid.muted=true; vid.id='sky';
     function tryPlay(){ var p=vid.play(); if(p&&p.then) p.then(function(){ if(tap) tap.hidden=true; }).catch(function(){ if(tap) tap.hidden=false; }); }
@@ -49,6 +49,8 @@
     var kick=function(){ if(vid.paused) tryPlay(); };
     ['touchstart','touchend','click','scroll'].forEach(function(ev){ addEventListener(ev,kick,{passive:true}); });
     document.addEventListener('visibilitychange',function(){ if(document.hidden) vid.pause(); else tryPlay(); });
+    function fadeByZoom(){var z=map.getZoom();ov.setOpacity(z<=13?.78:z===14?.62:z===15?.42:.28);}
+    map.on('zoomend',fadeByZoom); fadeByZoom();
     tryPlay();
   })();
 
@@ -82,7 +84,7 @@
       var toVenue=km([d.lat,d.lng],VENUE);
       if(dist) dist.textContent = toVenue<0.12 ? 'बारात विवाह स्थल पर पहुँच गई है' : 'विवाह स्थल से '+(toVenue<1? Math.round(toVenue*1000)+' मीटर' : toVenue.toFixed(1)+' km')+' दूर';
       setCap(d.off ? 'ट्रैकिंग रुकी हुई है · आख़िरी स्थिति '+ago(d.t) : (stale ? 'सिग्नल नहीं मिल रहा · आख़िरी स्थिति '+ago(d.t) : 'बारात LIVE · '+ago(d.t)), !d.off && !stale);
-      if(follow){ if(first) map.setView([d.lat,d.lng],15); else map.panTo([d.lat,d.lng],{animate:true}); }
+      if(follow){ if(first) map.setView([d.lat,d.lng],14); else map.panTo([d.lat,d.lng],{animate:true}); }
     }).catch(function(){});
   }
   function pollTrail(){
