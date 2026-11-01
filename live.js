@@ -16,15 +16,16 @@
     else {html='<div class="pinwrap">'+L1+L2+'</div>';size=[160,h+24];anc=[80,h];}
     return L.divIcon({className:'',html:html,iconSize:size,iconAnchor:anc});}
   L.marker(HOME,{icon:pin('pin-home.png','निवास','',true),zIndexOffset:500}).addTo(map);
-  L.marker(DHABA,{icon:pin('pin-dhaba.png','जय भवानी ढाबा','left')}).addTo(map);
-  L.marker(VENUE,{icon:pin('pin-venue.png','होटल कस्तूरी ऑर्किड','right'),zIndexOffset:600}).addTo(map);
-  var route=L.polyline([HOME,DHABA,VENUE],{color:'#E7C46A',weight:3,dashArray:'5 7',opacity:.9}).addTo(map);
+  var mDhaba=L.marker(DHABA,{icon:pin('pin-dhaba.png','जय भवानी ढाबा','left')});
+  var mVenue=L.marker(VENUE,{icon:pin('pin-venue.png','होटल कस्तूरी ऑर्किड','right'),zIndexOffset:600});
+  var route=L.polyline([HOME,DHABA,VENUE],{color:'#E7C46A',weight:3,dashArray:'5 7',opacity:.9});
+  var routeShown=false; function showRoute(){ if(routeShown) return; routeShown=true; mDhaba.addTo(map); mVenue.addTo(map); route.addTo(map); var fb=document.getElementById('fitall'); if(fb) fb.hidden=false; }
   // real road route (OSRM); falls back to the straight dotted line
   fetch('https://router.project-osrm.org/route/v1/driving/'+[HOME,DHABA,VENUE].map(function(p){return p[1]+','+p[0];}).join(';')+'?overview=full&geometries=geojson')
     .then(function(r){return r.json();}).then(function(j){ if(j&&j.routes&&j.routes[0]) route.setLatLngs(j.routes[0].geometry.coordinates.map(function(c){return [c[1],c[0]];})); }).catch(function(){});
   map.setView(HOME,14);
   var bounds=L.latLngBounds([HOME,DHABA,VENUE]).pad(0.3);
-  var fitBtn=document.getElementById('fitall'); if(fitBtn) fitBtn.onclick=function(){follow=false; map.fitBounds(bounds);};
+  var fitBtn=document.getElementById('fitall'); if(fitBtn){ fitBtn.hidden=true; fitBtn.onclick=function(){follow=false; map.fitBounds(bounds);}; }
   var baraat=L.marker(HOME,{icon:L.divIcon({className:'',html:'<div class="pinwrap live"><div class="pin">बारात</div></div>',iconSize:[60,60],iconAnchor:[30,22]}),zIndexOffset:1000});
   var trail=L.polyline([],{color:'#F2E3B3',weight:4,opacity:.9}).addTo(map);
   var acc=L.circle(HOME,{radius:0,color:'#F2E3B3',weight:1,fillOpacity:.1});
@@ -144,6 +145,7 @@
     fetch(DB+'/baraat/'+KEY+'/latest.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
       if(!d||!d.lat){ setCap('बारात प्रस्थान पर यहाँ चलती हुई दिखेगी',false); return; }
       var stale=Date.now()-d.t>3*60*1000, first=!last; last=d;
+      if(!d.off) showRoute();
       if(!map.hasLayer(baraat)){baraat.addTo(map); acc.addTo(map);}
       baraat.setLatLng([d.lat,d.lng]); acc.setLatLng([d.lat,d.lng]).setRadius(Math.min(d.acc||0,150));
       var toVenue=km([d.lat,d.lng],VENUE);
