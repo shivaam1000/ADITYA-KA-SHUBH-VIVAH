@@ -23,7 +23,7 @@
   // real road route (OSRM); falls back to the straight dotted line
   fetch('https://router.project-osrm.org/route/v1/driving/'+[HOME,DHABA,VENUE].map(function(p){return p[1]+','+p[0];}).join(';')+'?overview=full&geometries=geojson')
     .then(function(r){return r.json();}).then(function(j){ if(j&&j.routes&&j.routes[0]) route.setLatLngs(j.routes[0].geometry.coordinates.map(function(c){return [c[1],c[0]];})); }).catch(function(){});
-  map.setView(HOME,14);
+  map.setView([26.262,72.978],13);
   var bounds=L.latLngBounds([HOME,DHABA,VENUE]).pad(0.3);
   var fitBtn=document.getElementById('fitall'); if(fitBtn){ fitBtn.hidden=true; fitBtn.onclick=function(){follow=false; map.fitBounds(bounds);}; }
   var baraat=L.marker(HOME,{icon:L.divIcon({className:'',html:'<div class="pinwrap live"><div class="pin">बारात</div></div>',iconSize:[60,60],iconAnchor:[30,22]}),zIndexOffset:1000});
@@ -32,23 +32,24 @@
   var follow=true; map.on('dragstart zoomstart',function(e){ if(e.originalEvent) follow=false; });
   var recenter=document.getElementById('recenter'); if(recenter) recenter.onclick=function(){follow=true; if(last) map.setView([last.lat,last.lng],Math.max(map.getZoom(),15));};
 
-  // real fireworks footage BEHIND the map tiles (tiles screen-blend on top), so it never has to follow drags
+  // real fireworks footage as a Leaflet video overlay: above tiles, below pins, moves with the map
   (function(){
-    var vid=document.getElementById('sky'); if(!vid) return;
     var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
     var saveData=navigator.connection&&navigator.connection.saveData;
-    if(reduce||saveData){ vid.removeAttribute('autoplay'); return; }
-    vid.muted=true; vid.setAttribute('muted',''); vid.setAttribute('playsinline',''); vid.setAttribute('webkit-playsinline','');
     var tap=document.getElementById('skytap');
+    var B=L.latLngBounds([[26.195,72.905],[26.315,73.055]]);
+    if(reduce||saveData){ L.imageOverlay('assets/sky.jpg',B,{opacity:.8,interactive:false}).addTo(map); return; }
+    var ov=L.videoOverlay('assets/sky.mp4',B,{opacity:.78,autoplay:true,muted:true,loop:true,playsInline:true,interactive:false,zIndex:1}).addTo(map);
+    var vid=ov.getElement(); if(!vid){ return; }
+    vid.setAttribute('poster','assets/sky.jpg'); vid.setAttribute('webkit-playsinline',''); vid.muted=true; vid.id='sky';
     function tryPlay(){ var p=vid.play(); if(p&&p.then) p.then(function(){ if(tap) tap.hidden=true; }).catch(function(){ if(tap) tap.hidden=false; }); }
     if(tap) tap.addEventListener('click',function(e){ e.stopPropagation(); tryPlay(); });
     vid.addEventListener('playing',function(){ if(tap) tap.hidden=true; });
     setTimeout(function(){ if(vid.paused&&tap) tap.hidden=false; },2500);
-    tryPlay();
     var kick=function(){ if(vid.paused) tryPlay(); };
     ['touchstart','touchend','click','scroll'].forEach(function(ev){ addEventListener(ev,kick,{passive:true}); });
-    vid.addEventListener('canplay',function(){ if(vid.paused) tryPlay(); });
     document.addEventListener('visibilitychange',function(){ if(document.hidden) vid.pause(); else tryPlay(); });
+    tryPlay();
   })();
 
   // tap to go full screen, ✕ to come back

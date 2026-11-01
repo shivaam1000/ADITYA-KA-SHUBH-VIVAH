@@ -81,11 +81,9 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 @media(prefers-reduced-motion:reduce){.pinwrap.live .pin{animation:none}}
 
 .mapwrap{background:#0b1118}
-.sky{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;z-index:0}
-.livemap{position:relative;z-index:1;background:transparent!important}
-.livemap.leaflet-container{background:transparent}
-.livemap .leaflet-tile-pane{opacity:.45}
-.livemap .leaflet-tile{filter:none}
+.livemap{background:#0b1118}
+.livemap .leaflet-tile-pane{filter:brightness(1.6) contrast(1.1)}
+.livemap .leaflet-overlay-pane video,.livemap .leaflet-overlay-pane img{pointer-events:none}
 .sky::-webkit-media-controls,.sky::-webkit-media-controls-start-playback-button,.sky::-webkit-media-controls-panel{display:none!important;-webkit-appearance:none;opacity:0}
 .sky.off{opacity:.0}
 .skytap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:700;background:rgba(251,248,239,.92);border:1px solid var(--gold);color:var(--olive);font:600 14px var(--body);padding:10px 16px;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.4)}
@@ -199,7 +197,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <section class="status sec"><span class="live"><i></i>Baraat Live</span>
 <p class="label">बारात अभी यहाँ है</p><p class="where" id="where">बारात अभी प्रस्थान नहीं हुई है</p>
 <p class="note" id="note">बारात प्रस्थान करते ही यहाँ live location और updates मिलते रहेंगे।</p>
-<div class="mapwrap"><video id="sky" class="sky" src="assets/sky.mp4" poster="assets/sky.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true"></video><div id="livemap" class="livemap"></div><button type="button" class="skytap" id="skytap" hidden>▶ जगमग चालू करें</button><button type="button" class="recenter" id="recenter" title="बारात पर लौटें">◎</button><button type="button" class="fitall" id="fitall">पूरा मार्ग</button><button type="button" class="mapclose" id="mapclose" hidden>✕ बंद करें</button><div class="maphint" id="maphint">बड़ा देखने के लिए map पर tap करें</div></div>
+<div class="mapwrap"><div id="livemap" class="livemap"></div><button type="button" class="skytap" id="skytap" hidden>▶ जगमग चालू करें</button><button type="button" class="recenter" id="recenter" title="बारात पर लौटें">◎</button><button type="button" class="fitall" id="fitall">पूरा मार्ग</button><button type="button" class="mapclose" id="mapclose" hidden>✕ बंद करें</button><div class="maphint" id="maphint">बड़ा देखने के लिए map पर tap करें</div></div>
 <p class="mapcap" id="mapcap">बारात प्रस्थान पर यहाँ चलती हुई दिखेगी</p>
 <p class="mapdist" id="mapdist"></p>
 <p class="stamp" id="stamp" hidden></p>
@@ -295,7 +293,7 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793564831"></script>
-<script src="live.js?v=1793564831"></script>
+<script src="config.js?v=1793565069"></script>
+<script src="live.js?v=1793565069"></script>
 </body>
 </html>
