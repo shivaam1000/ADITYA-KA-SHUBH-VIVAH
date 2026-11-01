@@ -82,8 +82,9 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 
 .mapwrap{background:#0b1118}
 .livemap{background:#0b1118}
-.livemap .leaflet-tile-pane{filter:brightness(1.6) contrast(1.1)}
-.livemap .leaflet-overlay-pane video,.livemap .leaflet-overlay-pane img{pointer-events:none}
+.livemap .leaflet-tile-pane{filter:brightness(1.7) contrast(1.1)}
+.sky{position:absolute;left:0;top:0;object-fit:cover;pointer-events:none;opacity:.7}
+.leaflet-skyPane-pane{pointer-events:none}
 .sky::-webkit-media-controls,.sky::-webkit-media-controls-start-playback-button,.sky::-webkit-media-controls-panel{display:none!important;-webkit-appearance:none;opacity:0}
 .sky.off{opacity:.0}
 .skytap{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:700;background:rgba(251,248,239,.92);border:1px solid var(--gold);color:var(--olive);font:600 14px var(--body);padding:10px 16px;border-radius:999px;box-shadow:0 2px 10px rgba(0,0,0,.4)}
@@ -294,7 +295,7 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='ðŸ
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793565546"></script>
-<script src="live.js?v=1793565546"></script>
+<script src="config.js?v=1793565709"></script>
+<script src="live.js?v=1793565709"></script>
 </body>
 </html>

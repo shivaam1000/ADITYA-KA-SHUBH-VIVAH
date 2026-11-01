@@ -23,8 +23,8 @@
   // real road route (OSRM); falls back to the straight dotted line
   fetch('https://router.project-osrm.org/route/v1/driving/'+[HOME,DHABA,VENUE].map(function(p){return p[1]+','+p[0];}).join(';')+'?overview=full&geometries=geojson')
     .then(function(r){return r.json();}).then(function(j){ if(j&&j.routes&&j.routes[0]) route.setLatLngs(j.routes[0].geometry.coordinates.map(function(c){return [c[1],c[0]];})); }).catch(function(){});
-  map.setView([26.262,72.978],13);
   var bounds=L.latLngBounds([HOME,DHABA,VENUE]).pad(0.3);
+  map.fitBounds(bounds);
   var fitBtn=document.getElementById('fitall'); if(fitBtn){ fitBtn.onclick=function(){follow=false; map.fitBounds(bounds);}; }
   var baraat=L.marker(HOME,{icon:L.divIcon({className:'',html:'<div class="pinwrap live"><div class="pin">बारात</div></div>',iconSize:[60,60],iconAnchor:[30,22]}),zIndexOffset:1000});
   var trail=L.polyline([],{color:'#F2E3B3',weight:4,opacity:.9}).addTo(map);
@@ -32,16 +32,20 @@
   var follow=true; map.on('dragstart zoomstart',function(e){ if(e.originalEvent) follow=false; });
   var recenter=document.getElementById('recenter'); if(recenter) recenter.onclick=function(){follow=true; if(last&&last.lat) map.setView([last.lat,last.lng],Math.max(map.getZoom(),14)); else map.setView(HOME,14);};
 
-  // real fireworks footage as a Leaflet video overlay: above tiles, below pins, moves with the map
+  // real fireworks footage: fixed to the viewport (never scales), above tiles, below pins
   (function(){
     var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
     var saveData=navigator.connection&&navigator.connection.saveData;
     var tap=document.getElementById('skytap');
-    var B=L.latLngBounds([[26.195,72.905],[26.315,73.055]]);
-    if(reduce||saveData){ L.imageOverlay('assets/sky.jpg',B,{opacity:.8,interactive:false}).addTo(map); return; }
-    var ov=L.videoOverlay('assets/sky.mp4?v=2',B,{opacity:.78,autoplay:true,muted:true,loop:true,playsInline:true,interactive:false,zIndex:1}).addTo(map);
-    var vid=ov.getElement(); if(!vid){ return; }
-    vid.setAttribute('poster','assets/sky.jpg'); vid.setAttribute('webkit-playsinline',''); vid.muted=true; vid.id='sky';
+    var pane=map.createPane('skyPane'); pane.style.zIndex=450; pane.style.pointerEvents='none';
+    var vid=document.createElement('video'); vid.id='sky'; vid.className='sky';
+    vid.src='assets/sky.mp4?v=2'; vid.poster='assets/sky.jpg'; vid.muted=true; vid.loop=true; vid.autoplay=!(reduce||saveData); vid.preload='auto';
+    vid.setAttribute('muted',''); vid.setAttribute('playsinline',''); vid.setAttribute('webkit-playsinline',''); vid.setAttribute('aria-hidden','true');
+    pane.appendChild(vid);
+    function fit(){var r=mapEl.getBoundingClientRect();vid.style.width=r.width+'px';vid.style.height=r.height+'px';L.DomUtil.setPosition(vid,map.containerPointToLayerPoint([0,0]));}
+    map.on('move viewreset resize',fit); addEventListener('resize',fit); fit();
+    map.on('zoomstart',function(){vid.style.visibility='hidden';}); map.on('zoomend',function(){fit();vid.style.visibility='visible';});
+    if(reduce||saveData) return;
     function tryPlay(){ var p=vid.play(); if(p&&p.then) p.then(function(){ if(tap) tap.hidden=true; }).catch(function(){ if(tap) tap.hidden=false; }); }
     if(tap) tap.addEventListener('click',function(e){ e.stopPropagation(); tryPlay(); });
     vid.addEventListener('playing',function(){ if(tap) tap.hidden=true; });
@@ -49,8 +53,6 @@
     var kick=function(){ if(vid.paused) tryPlay(); };
     ['touchstart','touchend','click','scroll'].forEach(function(ev){ addEventListener(ev,kick,{passive:true}); });
     document.addEventListener('visibilitychange',function(){ if(document.hidden) vid.pause(); else tryPlay(); });
-    function fadeByZoom(){var z=map.getZoom();ov.setOpacity(z<=13?.78:z===14?.62:z===15?.42:.28);}
-    map.on('zoomend',fadeByZoom); fadeByZoom();
     tryPlay();
   })();
 
