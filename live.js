@@ -7,16 +7,19 @@
 
   var map=L.map('livemap',{zoomControl:false,attributionControl:true,scrollWheelZoom:false});
   L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
-  L.control.zoom({position:'bottomright'}).addTo(map);
-
-  function pin(txt,cls){return L.divIcon({className:'',html:'<div class="pin '+(cls||'')+'">'+txt+'</div>',iconSize:[34,34],iconAnchor:[17,17]});}
-  L.marker(HOME,{icon:pin('🏠')}).addTo(map).bindTooltip('निवास · प्रस्थान 5:30',{direction:'top',offset:[0,-16]});
-  L.marker(DHABA,{icon:pin('🫖')}).addTo(map).bindTooltip('जय भवानी ढाबा · पुनः एकत्र',{direction:'top',offset:[0,-16]});
-  L.marker(VENUE,{icon:pin('💒')}).addTo(map).bindTooltip('होटल कस्तूरी ऑर्किड',{direction:'top',offset:[0,-16]});
-  L.polyline([HOME,DHABA,VENUE],{color:'#B8892E',weight:2,dashArray:'4 6',opacity:.7}).addTo(map);
-  map.fitBounds(L.latLngBounds([HOME,DHABA,VENUE]).pad(0.25));
-
-  var baraat=L.marker(HOME,{icon:pin('🥁','live'),zIndexOffset:1000});
+  
+  function pin(n,label,cls){return L.divIcon({className:'',html:'<div class="pinwrap '+(cls||'')+'"><div class="pin">'+n+'</div><div class="pinlbl">'+label+'</div></div>',iconSize:[120,60],iconAnchor:[60,17]});}
+  L.marker(HOME,{icon:pin('१','प्रारंभ · निवास','start'),zIndexOffset:500}).addTo(map);
+  L.marker(DHABA,{icon:pin('२','जय भवानी ढाबा')}).addTo(map);
+  L.marker(VENUE,{icon:pin('३','विवाह स्थल · कस्तूरी ऑर्किड')}).addTo(map);
+  var route=L.polyline([HOME,DHABA,VENUE],{color:'#B8892E',weight:3,dashArray:'5 7',opacity:.8}).addTo(map);
+  // real road route (OSRM); falls back to the straight dotted line
+  fetch('https://router.project-osrm.org/route/v1/driving/'+[HOME,DHABA,VENUE].map(function(p){return p[1]+','+p[0];}).join(';')+'?overview=full&geometries=geojson')
+    .then(function(r){return r.json();}).then(function(j){ if(j&&j.routes&&j.routes[0]) route.setLatLngs(j.routes[0].geometry.coordinates.map(function(c){return [c[1],c[0]];})); }).catch(function(){});
+  map.setView(HOME,14);
+  var bounds=L.latLngBounds([HOME,DHABA,VENUE]).pad(0.3);
+  var fitBtn=document.getElementById('fitall'); if(fitBtn) fitBtn.onclick=function(){follow=false; map.fitBounds(bounds);};
+  var baraat=L.marker(HOME,{icon:L.divIcon({className:'',html:'<div class="pinwrap live"><div class="pin">बारात</div></div>',iconSize:[60,60],iconAnchor:[30,22]}),zIndexOffset:1000});
   var trail=L.polyline([],{color:'#5B6B2F',weight:4,opacity:.85}).addTo(map);
   var acc=L.circle(HOME,{radius:0,color:'#5B6B2F',weight:1,fillOpacity:.08});
   var follow=true; map.on('dragstart zoomstart',function(e){ if(e.originalEvent) follow=false; });
