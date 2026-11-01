@@ -50,6 +50,14 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 .tl time{display:block;font-size:12px;color:var(--olive-soft);letter-spacing:.04em;font-variant-numeric:tabular-nums}
 .tl p{margin:2px 0 0;overflow-wrap:anywhere}
 .empty{color:var(--olive-soft);font-style:italic;margin:4px 0}
+.route{list-style:none;margin:0;padding:0;border-left:1px solid var(--gold-soft)}
+.route li{position:relative;padding:0 0 16px 18px;display:flex;flex-direction:column;gap:1px}
+.route li::before{content:"";position:absolute;left:-5px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--ivory);border:2px solid var(--gold)}
+.route li:last-child::before{background:var(--gold)}
+.route .rt{font-size:12px;letter-spacing:.06em;color:var(--olive-soft);text-transform:uppercase}
+.route b{font-family:var(--display);font-weight:400;font-size:19px;color:var(--olive)}
+.route small{font-size:13px;color:var(--olive-deep)}
+.route a{font-size:13px;color:var(--olive);text-decoration:underline;text-underline-offset:3px;margin-top:3px}
 .foot{text-align:center;margin-top:28px;font-family:var(--display);color:var(--gold);font-size:15px}
 .foot small{display:block;font-family:var(--body);color:var(--olive-soft);font-size:12px;margin-top:4px}
 /* countdown roller */
@@ -101,6 +109,13 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <p class="stamp" id="stamp" hidden></p>
 <a class="btn off" id="map" href="#" rel="noopener">📍 Live location जल्द ही</a>
 </section>
+<h2>बारात का मार्ग</h2>
+<ol class="route">
+<li><span class="rt">शाम 5:30</span><b>निवास से प्रस्थान</b><small>C-11, प्रथम विस्तार, कमला नेहरू नगर</small></li>
+<li><span class="rt">पुनः एकत्र</span><b>DPS ढाबा</b><small>पाल–सांगरिया बाईपास रोड</small><a href="https://www.google.com/maps/search/?api=1&query=DPS+Dhaba+Jodhpur&query_place_id=ChIJEX2Q9mCJQTkRJJcCwlsg7vI" target="_blank" rel="noopener">Maps में देखें →</a></li>
+<li><span class="rt">विवाह स्थल</span><b>Hotel Kasturi Orchid</b><small>पाल–चौपासनी बाईपास रोड, DPS स्कूल के पास</small><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Kasturi+Orchid+Jodhpur&query_place_id=ChIJCZMrGjiJQTkRTpjJPzwzF0k" target="_blank" rel="noopener">Maps में देखें →</a></li>
+</ol>
+<a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=Hotel+Kasturi+Orchid+Jodhpur&destination_place_id=ChIJCZMrGjiJQTkRTpjJPzwzF0k" target="_blank" rel="noopener">🧭 विवाह स्थल तक रास्ता</a>
 <h2>Updates</h2>
 <div id="updates"><p class="empty">अभी कोई update नहीं — बारात के समय यहाँ देखते रहें।</p></div>
 <p class="foot">स्वागताकांक्षी<small>बिड़ला परिवार · यह page अपने आप update होता रहता है</small></p>
