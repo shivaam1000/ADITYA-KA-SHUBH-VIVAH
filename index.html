@@ -38,7 +38,7 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .names{font-family:var(--display);font-weight:400;font-size:34px;line-height:1.25;color:var(--olive);margin:10px 0 0;text-wrap:balance}
 .names .amp{color:var(--gold);font-size:24px;margin:0 8px}
 .event{margin:6px 0 0;font-size:14px;color:var(--olive-soft);letter-spacing:.02em}
-.event.hl{display:inline-block;font-family:var(--body);font-weight:600;font-size:18px;color:var(--olive-deep);background:linear-gradient(transparent 55%,var(--gold-soft) 55%);padding:0 6px;letter-spacing:.01em}
+.event.hl{display:block;font-family:var(--body);font-weight:600;font-size:18px;color:var(--olive-deep);letter-spacing:.01em}
 .doha-img{display:block;width:min(100%,420px);height:auto;margin:14px auto 0}
 .doha{font-family:var(--display);font-size:17px;line-height:1.7;color:var(--olive);margin:14px auto 0;max-width:34ch;text-wrap:balance}
 .hr{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px 0}
@@ -65,7 +65,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 .route li{position:relative;padding:0 0 16px 18px;display:flex;flex-direction:column;gap:1px}
 .route li::before{content:"";position:absolute;left:-5px;top:9px;width:9px;height:9px;border-radius:50%;background:var(--ivory);border:2px solid var(--gold)}
 .route li:last-child::before{background:var(--gold)}
-.route .rt{font-size:12px;letter-spacing:.06em;color:var(--olive-soft);text-transform:uppercase}
+.route .rt{font-size:15px;font-weight:600;letter-spacing:.02em;color:var(--olive)}
 .route b{font-family:var(--display);font-weight:400;font-size:19px;color:var(--olive)}
 .route small{font-size:13px;color:var(--olive-deep)}
 .route a{font-size:13px;color:var(--olive);text-decoration:underline;text-underline-offset:3px;margin-top:3px}
@@ -74,6 +74,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 /* countdown roller */
 .cd{text-align:center;margin:4px 0 10px}
 .cd .cap{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive-soft);margin:0 0 8px}
+.cd .cap.big{font-size:19px;font-weight:600;color:var(--olive);letter-spacing:.02em;text-transform:none;margin-bottom:12px}
 .cd .row{display:flex;justify-content:center;gap:clamp(8px,3vw,18px)}
 .cd .unit{display:flex;flex-direction:column;align-items:center;gap:5px}
 .cd .digits{display:flex;gap:3px}
@@ -105,7 +106,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <img class="doha-img" src="assets/doha.png" alt="आदित्य की किरणें मिलीं, महकी खुशबू संग । शुभ तिथि पर आइए, भरने इनके जीवन में रंग ॥" width="1400" height="288"></header>
 <div class="hr"></div>
 <section class="cd" id="cd" hidden>
-<p class="cap">बारात प्रस्थान में शेष</p>
+<p class="cap big">बारात प्रस्थान में शेष</p>
 <div class="row">
 <div class="unit"><div class="digits" data-u="d"></div><span class="u">दिन</span></div><span class="sep">:</span>
 <div class="unit"><div class="digits" data-u="h"></div><span class="u">घंटे</span></div><span class="sep">:</span>
