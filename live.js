@@ -39,7 +39,11 @@
     var saveData=navigator.connection&&navigator.connection.saveData;
     if(reduce||saveData){ vid.removeAttribute('autoplay'); return; }
     vid.muted=true; vid.setAttribute('muted',''); vid.setAttribute('playsinline',''); vid.setAttribute('webkit-playsinline','');
-    function tryPlay(){ var p=vid.play(); if(p&&p.catch) p.catch(function(){}); }
+    var tap=document.getElementById('skytap');
+    function tryPlay(){ var p=vid.play(); if(p&&p.then) p.then(function(){ if(tap) tap.hidden=true; }).catch(function(){ if(tap) tap.hidden=false; }); }
+    if(tap) tap.addEventListener('click',function(e){ e.stopPropagation(); tryPlay(); });
+    vid.addEventListener('playing',function(){ if(tap) tap.hidden=true; });
+    setTimeout(function(){ if(vid.paused&&tap) tap.hidden=false; },2500);
     tryPlay();
     var kick=function(){ if(vid.paused) tryPlay(); };
     ['touchstart','touchend','click','scroll'].forEach(function(ev){ addEventListener(ev,kick,{passive:true}); });
