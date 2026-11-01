@@ -15,9 +15,14 @@
     else if(side==='right'){html='<div class="pinrow r">'+L1+L2+'</div>';size=[220,h];anc=[w/2,h];}
     else {html='<div class="pinwrap">'+L1+L2+'</div>';size=[160,h+24];anc=[80,h];}
     return L.divIcon({className:'',html:html,iconSize:size,iconAnchor:anc});}
-  L.marker(HOME,{icon:pin('pin-home.png','निवास','',true),zIndexOffset:500}).addTo(map);
+  var mHome=L.marker(HOME,{icon:pin('pin-home.png','निवास','',true),zIndexOffset:500}).addTo(map);
   var mDhaba=L.marker(DHABA,{icon:pin('pin-dhaba.png','जय भवानी ढाबा','left')}).addTo(map);
   var mVenue=L.marker(VENUE,{icon:pin('pin-venue.png','होटल कस्तूरी ऑर्किड','right'),zIndexOffset:600}).addTo(map);
+  function card(title,sub,ll,q){return '<div class="pcard"><b>'+title+'</b>'+(sub?'<small>'+sub+'</small>':'')+'<a href="https://www.google.com/maps/search/?api=1&query='+(q||ll[0]+','+ll[1])+'" target="_blank" rel="noopener">Google Maps में खोलें →</a></div>';}
+  [[mHome,'निवास','C-11, प्रथम विस्तार, कमला नेहरू नगर',HOME,null],[mDhaba,'जय भवानी ढाबा (DPS ढाबा)','पाल रोड, DPS स्कूल के पास · बारात यहाँ पुनः एकत्र',DHABA,null],[mVenue,'होटल कस्तूरी ऑर्किड','विवाह स्थल · पाल–चौपासनी बाईपास रोड',VENUE,'Hotel+Kasturi+Orchid+Jodhpur']].forEach(function(x){
+    x[0].bindPopup(card(x[1],x[2],x[3],x[4]),{closeButton:true,offset:[0,-40],className:'ppop',autoPan:true});
+    x[0].on('click',function(){ follow=false; map.flyTo(x[3],Math.max(map.getZoom(),15),{duration:.6}); });
+  });
   var rp=map.createPane('routePane'); rp.style.zIndex=470; rp.style.pointerEvents='none';
   var routeShadow=L.polyline([HOME,DHABA,VENUE],{pane:'routePane',color:'#2a1d05',weight:7,opacity:.55,lineCap:'round'}).addTo(map);
   var route=L.polyline([HOME,DHABA,VENUE],{pane:'routePane',color:'#FFD873',weight:4,dashArray:'7 9',opacity:1,lineCap:'round'}).addTo(map);

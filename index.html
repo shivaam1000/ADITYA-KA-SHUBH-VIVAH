@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <title>Baraat Live · आदित्य & खुशबू</title>
 <meta name="description" content="आदित्य & खुशबू — बारात की live location और updates">
 <meta property="og:title" content="Baraat Live · आदित्य & खुशबू">
@@ -80,7 +80,15 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 @keyframes ring{70%{box-shadow:0 0 0 14px rgba(140,45,45,0)}100%{box-shadow:0 0 0 0 rgba(140,45,45,0)}}
 @media(prefers-reduced-motion:reduce){.pinwrap.live .pin{animation:none}}
 
-.mapwrap{background:#0b1118}
+.mapwrap{background:#0b1118;touch-action:none;-webkit-user-select:none;user-select:none}
+.pcard{font-family:var(--body);color:var(--olive-deep);min-width:180px}
+.pcard b{display:block;font-family:var(--display);font-weight:400;font-size:17px;color:var(--olive)}
+.pcard small{display:block;font-size:12px;color:var(--olive-soft);margin:2px 0 6px}
+.pcard a{font-size:13px;color:var(--olive);text-decoration:underline;text-underline-offset:3px}
+.ppop .leaflet-popup-content-wrapper{background:var(--card);border:1px solid var(--gold);border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.ppop .leaflet-popup-tip{background:var(--card);border:1px solid var(--gold);border-top:0;border-left:0}
+.ppop .leaflet-popup-content{margin:10px 14px}
+.ppop .leaflet-popup-close-button{color:var(--olive)}
 .livemap{background:#0b1118}
 .livemap .leaflet-tile-pane{filter:brightness(1.7) contrast(1.1)}
 .sky{position:absolute;left:0;top:0;object-fit:cover;pointer-events:none;opacity:.7}
@@ -295,7 +303,7 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793565850"></script>
-<script src="live.js?v=1793565850"></script>
+<script src="config.js?v=1793566960"></script>
+<script src="live.js?v=1793566960"></script>
 </body>
 </html>
