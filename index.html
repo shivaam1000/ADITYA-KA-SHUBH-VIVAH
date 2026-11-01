@@ -51,6 +51,18 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 .empty{color:var(--olive-soft);font-style:italic;margin:4px 0}
 .foot{text-align:center;margin-top:28px;font-family:var(--display);color:var(--gold);font-size:15px}
 .foot small{display:block;font-family:var(--body);color:var(--olive-soft);font-size:12px;margin-top:4px}
+/* countdown roller */
+.cd{text-align:center;margin:4px 0 10px}
+.cd .cap{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--olive-soft);margin:0 0 8px}
+.cd .row{display:flex;justify-content:center;gap:clamp(8px,3vw,18px)}
+.cd .unit{display:flex;flex-direction:column;align-items:center;gap:5px}
+.cd .digits{display:flex;gap:3px}
+.roller{width:clamp(22px,6.5vw,32px);height:clamp(34px,10vw,48px);overflow:hidden;background:var(--card);border:1px solid var(--gold-soft);border-bottom:2px solid var(--gold);position:relative}
+.roller .col{display:flex;flex-direction:column;transition:transform .6s cubic-bezier(.3,.9,.3,1);will-change:transform}
+.roller .col span{height:clamp(34px,10vw,48px);line-height:clamp(34px,10vw,48px);text-align:center;font-family:var(--display);font-size:clamp(20px,6vw,28px);color:var(--olive)}
+.cd .u{font-size:11px;letter-spacing:.08em;color:var(--olive-soft);text-transform:uppercase}
+.cd .sep{font-family:var(--display);font-size:24px;color:var(--gold);align-self:flex-start;line-height:clamp(34px,10vw,48px)}
+@media(prefers-reduced-motion:reduce){.roller .col{transition:none}}
 </style>
 </head>
 <body>
@@ -59,6 +71,28 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <h1 class="names">आदित्य<span class="amp">&amp;</span>खुशबू</h1>
 <p class="event">शुभ विवाह · 21 नवम्बर 2026 · जोधपुर</p></header>
 <div class="hr"></div>
+<section class="cd" id="cd" hidden>
+<p class="cap">बारात में बाकी</p>
+<div class="row">
+<div class="unit"><div class="digits" data-u="d"></div><span class="u">दिन</span></div><span class="sep">:</span>
+<div class="unit"><div class="digits" data-u="h"></div><span class="u">घंटे</span></div><span class="sep">:</span>
+<div class="unit"><div class="digits" data-u="m"></div><span class="u">मिनट</span></div><span class="sep">:</span>
+<div class="unit"><div class="digits" data-u="s"></div><span class="u">सेकंड</span></div>
+</div>
+<p class="cap" style="margin-top:10px">21 नवम्बर 2026 · शाम 5:30 बजे</p>
+</section>
+<script>
+(function(){
+  var TARGET = Date.UTC(2026,10,21,12,0,0); // 21 Nov 2026 17:30 IST
+  var cd=document.getElementById('cd'); if(Date.now()>=TARGET)return; cd.hidden=false;
+  var cols={};
+  function build(u,n){var box=cd.querySelector('[data-u="'+u+'"]');cols[u]=[];for(var i=0;i<n;i++){var r=document.createElement('div');r.className='roller';var c=document.createElement('div');c.className='col';for(var k=0;k<10;k++){var s=document.createElement('span');s.textContent=k;c.appendChild(s);}r.appendChild(c);box.appendChild(r);cols[u].push(c);}}
+  build('d',2);build('h',2);build('m',2);build('s',2);
+  function set(u,v){var str=String(v).padStart(cols[u].length,'0');cols[u].forEach(function(c,i){c.style.transform='translateY(-'+(+str[i]*10)+'%)';});}
+  function tick(){var ms=TARGET-Date.now();if(ms<=0){cd.hidden=true;clearInterval(t);return;}var s=Math.floor(ms/1000);set('d',Math.floor(s/86400));set('h',Math.floor(s%86400/3600));set('m',Math.floor(s%3600/60));set('s',s%60);}
+  tick();var t=setInterval(tick,1000);
+})();
+</script>
 <section class="status"><span class="live"><i></i>Baraat Live</span>
 <p class="label">बारात अभी यहाँ है</p><p class="where" id="where">बारात अभी रवाना नहीं हुई</p>
 <p class="note" id="note">बारात रवाना होते ही यहाँ live location और updates मिलते रहेंगे।</p>
