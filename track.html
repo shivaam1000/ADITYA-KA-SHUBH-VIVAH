@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Baraat Tracker</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600&display=swap">
+<style>
+:root{--ivory:#FBF8EF;--card:#FFFDF6;--olive:#5B6B2F;--deep:#3E4A1F;--soft:#8A9560;--gold:#B8892E;--gold-soft:#E7D8A6;--live:#8C2D2D;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--ivory);min-height:100%}
+body{font-family:'Mukta',system-ui,sans-serif;color:var(--deep);padding:max(16px,env(safe-area-inset-left)) ;padding-top:calc(16px + env(safe-area-inset-top));padding-bottom:calc(24px + env(safe-area-inset-bottom));text-align:center}
+.wrap{max-width:440px;margin:0 auto}
+h1{font-weight:600;font-size:22px;color:var(--olive);margin:10px 0 4px}
+p{margin:6px 0}
+.sub{color:var(--soft);font-size:14px}
+.big{display:block;width:100%;border:0;padding:20px;font:600 20px 'Mukta',sans-serif;background:var(--olive);color:#fff;border-radius:14px;margin:22px 0 10px;cursor:pointer}
+.big.stop{background:var(--live)}
+.big:disabled{opacity:.5}
+.card{background:var(--card);border:1px solid var(--gold-soft);border-radius:12px;padding:14px;margin-top:14px;text-align:left}
+.row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--gold-soft);font-size:15px}
+.row:last-child{border:0}
+.row b{font-variant-numeric:tabular-nums}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#bbb;margin-right:6px;vertical-align:middle}
+.dot.on{background:#2e8b57;box-shadow:0 0 0 0 rgba(46,139,87,.5);animation:p 1.6s infinite}
+@keyframes p{70%{box-shadow:0 0 0 8px rgba(46,139,87,0)}100%{box-shadow:0 0 0 0 rgba(46,139,87,0)}}
+.err{color:var(--live);font-size:14px}
+.tips{font-size:13px;color:var(--soft);text-align:left;margin-top:16px;line-height:1.5}
+</style>
+</head>
+<body><div class="wrap">
+<h1>🥁 बारात Tracker</h1>
+<p class="sub">यह page सिर्फ बारात वाले phone के लिए है। इसे खुला रखें — guests के page पर बारात चलती दिखेगी।</p>
+<button class="big" id="go">ट्रैकिंग शुरू करें</button>
+<p class="err" id="err"></p>
+<div class="card">
+<div class="row"><span><span class="dot" id="dot"></span>स्थिति</span><b id="st">बंद</b></div>
+<div class="row"><span>आख़िरी भेजा</span><b id="lastSent">—</b></div>
+<div class="row"><span>GPS सटीकता</span><b id="acc">—</b></div>
+<div class="row"><span>कुल अपडेट</span><b id="cnt">0</b></div>
+</div>
+<div class="tips">
+• Location की अनुमति "Allow while using" दें और यह page सामने खुला रखें (screen on रहेगी)।<br>
+• Powerbank साथ रखें — GPS बैटरी खाता है।<br>
+• Venue पहुँचकर "ट्रैकिंग रोकें" दबा दें।
+</div>
+</div>
+<script src="config.js"></script>
+<script>
+(function(){
+  var CFG=window.BARAAT_CFG||{}, DB=CFG.db||"", KEY=CFG.key||"";
+  var q=new URLSearchParams(location.search); if(q.get('k')) KEY=q.get('k');
+  var go=document.getElementById('go'),err=document.getElementById('err'),st=document.getElementById('st'),dot=document.getElementById('dot'),lastSent=document.getElementById('lastSent'),accEl=document.getElementById('acc'),cnt=document.getElementById('cnt');
+  if(!DB||!KEY){go.disabled=true;err.textContent='Setup अधूरा है — Firebase link अभी जुड़ा नहीं।';return;}
+  var on=false,watch=null,fix=null,timer=null,n=0,lock=null;
+  function put(path,val){return fetch(DB+'/baraat/'+KEY+'/'+path+'.json',{method:'PUT',body:JSON.stringify(val)});}
+  function send(){
+    if(!fix) return;
+    var t=Date.now(), p={lat:+fix.coords.latitude.toFixed(6),lng:+fix.coords.longitude.toFixed(6),acc:Math.round(fix.coords.accuracy||0),spd:fix.coords.speed||0,t:t};
+    put('latest',p).then(function(r){ if(!r.ok) throw 0; n++; cnt.textContent=n; lastSent.textContent=new Date(t).toLocaleTimeString('hi-IN',{hour:'numeric',minute:'2-digit',second:'2-digit'}); err.textContent=''; })
+      .catch(function(){ err.textContent='भेज नहीं पाया — internet देखें, अगली कोशिश 10 सेकंड में।'; });
+    if(!send.lastTrail || t-send.lastTrail>20000){ send.lastTrail=t; put('trail/'+t,[p.lat,p.lng]).catch(function(){}); }
+  }
+  function start(){
+    if(!navigator.geolocation){err.textContent='इस phone में location उपलब्ध नहीं।';return;}
+    go.disabled=true; st.textContent='GPS खोज रहे हैं…';
+    watch=navigator.geolocation.watchPosition(function(pos){
+      fix=pos; accEl.textContent=Math.round(pos.coords.accuracy)+' m';
+      if(!on){on=true;go.disabled=false;go.textContent='ट्रैकिंग रोकें';go.className='big stop';st.textContent='चालू';dot.className='dot on';send();timer=setInterval(send,10000);}
+    },function(e){ go.disabled=false; err.textContent=e.code===1?'Location की अनुमति नहीं मिली — Settings में जाकर Allow करें।':'GPS नहीं मिल रहा, खुले में आएँ।'; st.textContent='बंद'; },{enableHighAccuracy:true,maximumAge:5000,timeout:20000});
+    if(navigator.wakeLock){navigator.wakeLock.request('screen').then(function(l){lock=l;}).catch(function(){});}
+  }
+  function stop(){
+    on=false; if(watch!=null)navigator.geolocation.clearWatch(watch); clearInterval(timer); if(lock){lock.release();lock=null;}
+    go.textContent='ट्रैकिंग शुरू करें'; go.className='big'; st.textContent='बंद'; dot.className='dot';
+    if(fix){ var p={lat:+fix.coords.latitude.toFixed(6),lng:+fix.coords.longitude.toFixed(6),acc:Math.round(fix.coords.accuracy||0),t:Date.now(),off:true}; put('latest',p).catch(function(){}); }
+  }
+  go.addEventListener('click',function(){ on?stop():start(); });
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden&&on&&navigator.wakeLock&&!lock){navigator.wakeLock.request('screen').then(function(l){lock=l;}).catch(function(){});} });
+})();
+</script>
+</body></html>
