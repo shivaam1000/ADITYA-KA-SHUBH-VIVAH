@@ -16,21 +16,21 @@
     else {html='<div class="pinwrap">'+L1+L2+'</div>';size=[160,h+24];anc=[80,h];}
     return L.divIcon({className:'',html:html,iconSize:size,iconAnchor:anc});}
   L.marker(HOME,{icon:pin('pin-home.png','निवास','',true),zIndexOffset:500}).addTo(map);
-  var mDhaba=L.marker(DHABA,{icon:pin('pin-dhaba.png','जय भवानी ढाबा','left')});
-  var mVenue=L.marker(VENUE,{icon:pin('pin-venue.png','होटल कस्तूरी ऑर्किड','right'),zIndexOffset:600});
+  var mDhaba=L.marker(DHABA,{icon:pin('pin-dhaba.png','जय भवानी ढाबा','left')}).addTo(map);
+  var mVenue=L.marker(VENUE,{icon:pin('pin-venue.png','होटल कस्तूरी ऑर्किड','right'),zIndexOffset:600}).addTo(map);
   var route=L.polyline([HOME,DHABA,VENUE],{color:'#E7C46A',weight:3,dashArray:'5 7',opacity:.9}).addTo(map);
-  var routeShown=false; function showRoute(){ if(routeShown) return; routeShown=true; mDhaba.addTo(map); mVenue.addTo(map); var fb=document.getElementById('fitall'); if(fb) fb.hidden=false; }
+  var routeShown=true; function showRoute(){}
   // real road route (OSRM); falls back to the straight dotted line
   fetch('https://router.project-osrm.org/route/v1/driving/'+[HOME,DHABA,VENUE].map(function(p){return p[1]+','+p[0];}).join(';')+'?overview=full&geometries=geojson')
     .then(function(r){return r.json();}).then(function(j){ if(j&&j.routes&&j.routes[0]) route.setLatLngs(j.routes[0].geometry.coordinates.map(function(c){return [c[1],c[0]];})); }).catch(function(){});
   map.setView([26.262,72.978],13);
   var bounds=L.latLngBounds([HOME,DHABA,VENUE]).pad(0.3);
-  var fitBtn=document.getElementById('fitall'); if(fitBtn){ fitBtn.hidden=true; fitBtn.onclick=function(){follow=false; map.fitBounds(bounds);}; }
+  var fitBtn=document.getElementById('fitall'); if(fitBtn){ fitBtn.onclick=function(){follow=false; map.fitBounds(bounds);}; }
   var baraat=L.marker(HOME,{icon:L.divIcon({className:'',html:'<div class="pinwrap live"><div class="pin">बारात</div></div>',iconSize:[60,60],iconAnchor:[30,22]}),zIndexOffset:1000});
   var trail=L.polyline([],{color:'#F2E3B3',weight:4,opacity:.9}).addTo(map);
   var acc=L.circle(HOME,{radius:0,color:'#F2E3B3',weight:1,fillOpacity:.1});
   var follow=true; map.on('dragstart zoomstart',function(e){ if(e.originalEvent) follow=false; });
-  var recenter=document.getElementById('recenter'); if(recenter) recenter.onclick=function(){follow=true; if(last) map.setView([last.lat,last.lng],Math.max(map.getZoom(),15));};
+  var recenter=document.getElementById('recenter'); if(recenter) recenter.onclick=function(){follow=true; if(last&&last.lat) map.setView([last.lat,last.lng],Math.max(map.getZoom(),15)); else map.setView(HOME,15);};
 
   // real fireworks footage as a Leaflet video overlay: above tiles, below pins, moves with the map
   (function(){
