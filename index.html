@@ -24,7 +24,7 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
   padding-left:0;padding-right:0;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
 .wrap{max-width:720px;margin:0 auto;background:var(--ivory)}
-.orn{position:absolute;width:72px;height:65px;background:url(assets/corner.png) no-repeat 0 0/72px 65px;pointer-events:none;z-index:1;opacity:.95}
+.orn{position:absolute;width:68px;height:68px;background:url(assets/corner.png) no-repeat 0 0/contain;pointer-events:none;z-index:1}
 .orn.tl{left:0;top:0}.orn.tr{right:0;top:0;transform:scaleX(-1)}.orn.bl{left:0;bottom:0;transform:scaleY(-1)}.orn.br{right:0;bottom:0;transform:scale(-1,-1)}
 .bar{position:absolute;left:50%;width:60px;height:5.5px;margin-left:-30px;background:var(--gold-line);z-index:1}
 .bar.t{top:10.5px}.bar.b{bottom:10.5px}
@@ -32,13 +32,7 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .top{text-align:center;padding:22px 16px 18px}
 .hero{position:relative;border-bottom:1px solid var(--gold-soft);overflow:hidden}
-.hero::before{content:"";position:absolute;left:0;right:0;top:.5px;height:1.75px;background:var(--gold-line)}
-.hero::after{content:"";position:absolute;left:0;right:0;top:6.4px;height:.6px;background:var(--olive-line)}
-.hero .vl{position:absolute;top:0;bottom:0;width:1.75px;background:var(--gold-line)}
-.hero .vl.l{left:.5px}.hero .vl.r{right:.5px}
-.hero .vl2{position:absolute;top:0;bottom:0;width:.6px;background:var(--olive-line)}
-.hero .vl2.l{left:6.4px}.hero .vl2.r{right:6.4px}
-.hero .orn.tl{left:-12px;top:-12px}.hero .orn.tr{right:-12px;top:-12px}
+.hero .orn.tl{left:8px;top:8px}.hero .orn.tr{right:8px;top:8px}
 .sec{padding:18px max(16px,env(safe-area-inset-left,0px)) 20px;border-bottom:1px solid var(--gold-soft)}
 .sec h2{margin:0 0 10px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--body);font-weight:600;color:var(--olive-soft)}
 .topbar{position:sticky;top:0;z-index:4000;display:flex;align-items:center;justify-content:space-between;height:46px;padding:0 max(16px,env(safe-area-inset-left,0px));background:rgba(251,248,239,.92);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--gold-soft);max-width:720px;margin:0 auto;padding-top:env(safe-area-inset-top,0px);box-sizing:content-box}
@@ -166,7 +160,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <body>
 <div class="topbar" id="topbar"><span class="tb-name">आदित्य <em>&amp;</em> खुशबू</span><span class="tb-live"><i></i>Baraat Live</span></div>
 <div class="wrap" id="app">
-<header class="top hero"><i class="vl l"></i><i class="vl r"></i><i class="vl2 l"></i><i class="vl2 r"></i><i class="orn tl"></i><i class="orn tr"></i><p class="ganesh">॥ श्री गणेशाय नमः ॥</p>
+<header class="top hero"><i class="orn tl"></i><i class="orn tr"></i><p class="ganesh">॥ श्री गणेशाय नमः ॥</p>
 <img class="logo" src="assets/logo.png" alt="" width="720" height="720"><h1 class="sr">आदित्य &amp; खुशबू</h1>
 <p class="event hl" style="margin-top:2px">शुभ विवाह · 21 नवम्बर 2026 · जोधपुर</p>
 <div class="music" id="music"><button type="button" id="play"><span class="eq"><i></i><i></i><i></i></span><span id="playTxt">🎵 शहनाई बजाएँ</span></button><button type="button" class="yt" id="ytBtn">🎶 बारात का गाना</button></div>
@@ -294,7 +288,7 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793563663"></script>
-<script src="live.js?v=1793563663"></script>
+<script src="config.js?v=1793563720"></script>
+<script src="live.js?v=1793563720"></script>
 </body>
 </html>
