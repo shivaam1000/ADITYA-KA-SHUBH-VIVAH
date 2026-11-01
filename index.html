@@ -53,6 +53,7 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .stamp{margin:10px 0 0;font-size:13px;color:var(--olive-soft);font-variant-numeric:tabular-nums}
 .btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--olive);color:var(--ivory);padding:13px 18px;font:600 16px var(--body);text-decoration:none;width:100%;margin-top:14px}
 .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.btn.ghost{background:transparent;color:var(--olive);border:1px solid var(--olive-soft);cursor:pointer;margin-top:22px}
 .btn.off{opacity:.45;pointer-events:none}
 h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);margin:22px 0 6px}
 .tl{list-style:none;margin:0;padding:0;border-left:1px solid var(--gold-soft)}
@@ -147,6 +148,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <a class="btn" href="https://www.google.com/maps/dir/?api=1&destination=Hotel+Kasturi+Orchid+Jodhpur&destination_place_id=ChIJCZMrGjiJQTkRTpjJPzwzF0k" target="_blank" rel="noopener">🧭 विवाह स्थल तक रास्ता</a>
 <h2>Updates</h2>
 <div id="updates"><p class="empty">अभी कोई update नहीं — बारात के समय यहाँ देखते रहें।</p></div>
+<button type="button" class="btn ghost" id="share">📤 यह page WhatsApp पर भेजें</button>
 <div class="hr" style="margin-top:26px"></div>
 <p class="foot" style="margin-top:14px">स्वागताकांक्षी<span class="fam">बिड़ला परिवार</span><small>यह page अपने आप update होता रहता है</small></p>
 </div></div>
@@ -200,6 +202,23 @@ document.getElementById('ytBtn').addEventListener('click',function(){var box=doc
   box.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/JtKjcyc5wh0?autoplay=1&playsinline=1&rel=0" title="बारात का गाना" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>'; box.hidden=false; this.textContent='✕ गाना बंद करें'; box.scrollIntoView({behavior:'smooth',block:'center'}); }
  else { box.innerHTML=''; box.hidden=true; this.textContent='🎶 बारात का गाना'; } });
 a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='🎵 शहनाई बजाएँ';});})();
+</script>
+<script>
+(function(){
+  var url=location.origin+location.pathname, msg='आदित्य & खुशबू — बारात Live: location और updates यहाँ देखें\n'+url;
+  document.getElementById('share').addEventListener('click',function(){
+    if(navigator.share){navigator.share({title:'Baraat Live',text:msg}).catch(function(){});}
+    else{window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');}
+  });
+  // auto-refresh every 60 s so guests see new updates without doing anything (skips while music/video plays)
+  setInterval(function(){
+    var a=document.getElementById('aud'), yt=document.getElementById('ytbox');
+    if((a&&!a.paused)||(yt&&!yt.hidden))return;
+    fetch(location.pathname+'?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.text();}).then(function(h){
+      if(h.indexOf('id="where"')>-1 && h!==document.__last){ if(document.__last) location.reload(); document.__last=h; }
+    }).catch(function(){});
+  },60000);
+})();
 </script>
 </body>
 </html>
