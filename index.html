@@ -87,7 +87,9 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 @media(prefers-reduced-motion:reduce){.roller .col{transition:none}}
 
 .music{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:12px 0 0}
-.music .yt{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gold);color:var(--olive);padding:8px 16px;font:500 14px var(--body);text-decoration:none;border-radius:999px}
+.ytbox{margin:12px auto 0;max-width:420px;aspect-ratio:16/9;border:1px solid var(--gold-soft);background:var(--card)}
+.ytbox iframe{display:block;width:100%;height:100%;border:0}
+.music .yt{background:transparent;cursor:pointer;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gold);color:var(--olive);padding:8px 16px;font:500 14px var(--body);text-decoration:none;border-radius:999px}
 .music button{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--gold);color:var(--olive);padding:8px 16px;font:500 14px var(--body);cursor:pointer;border-radius:999px}
 .music button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .music .eq{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
@@ -103,7 +105,8 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <header class="top"><p class="ganesh">॥ श्री गणेशाय नमः ॥</p>
 <img class="logo" src="assets/logo.png" alt="" width="720" height="720"><h1 class="sr">आदित्य &amp; खुशबू</h1>
 <p class="event hl" style="margin-top:2px">शुभ विवाह · 21 नवम्बर 2026 · जोधपुर</p>
-<div class="music" id="music"><button type="button" id="play"><span class="eq"><i></i><i></i><i></i></span><span id="playTxt">🎵 शहनाई बजाएँ</span></button><a class="yt" href="https://www.youtube.com/results?search_query=Chhote+Chhote+Bhaiyon+Ke+Bade+Bhaiya+Hum+Saath+Saath+Hain" target="_blank" rel="noopener">🎶 बारात का गाना · YouTube</a></div>
+<div class="music" id="music"><button type="button" id="play"><span class="eq"><i></i><i></i><i></i></span><span id="playTxt">🎵 शहनाई बजाएँ</span></button><button type="button" class="yt" id="ytBtn">🎶 बारात का गाना</button></div>
+<div class="ytbox" id="ytbox" hidden></div>
 <audio id="aud" src="assets/shehnai.mp3" loop preload="none"></audio>
 <img class="doha-img" src="assets/doha.png" alt="आदित्य की किरणें मिलीं, महकी खुशबू संग । शुभ तिथि पर आइए, भरने इनके जीवन में रंग ॥" width="1400" height="288"></header>
 <div class="hr"></div>
@@ -192,6 +195,10 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <script>
 (function(){var a=document.getElementById('aud'),w=document.getElementById('music'),b=document.getElementById('play'),t=document.getElementById('playTxt');
 b.addEventListener('click',function(){ if(a.paused){a.play().then(function(){w.classList.add('on');t.textContent='⏸ रोकें';}).catch(function(){t.textContent='🎵 फिर दबाएँ';}); } else {a.pause();w.classList.remove('on');t.textContent='🎵 शहनाई बजाएँ';} });
+document.getElementById('ytBtn').addEventListener('click',function(){var box=document.getElementById('ytbox');
+ if(box.hidden){ if(!a.paused){a.pause();w.classList.remove('on');t.textContent='🎵 शहनाई बजाएँ';}
+  box.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/JtKjcyc5wh0?autoplay=1&playsinline=1&rel=0" title="बारात का गाना" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>'; box.hidden=false; this.textContent='✕ गाना बंद करें'; box.scrollIntoView({behavior:'smooth',block:'center'}); }
+ else { box.innerHTML=''; box.hidden=true; this.textContent='🎶 बारात का गाना'; } });
 a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='🎵 शहनाई बजाएँ';});})();
 </script>
 </body>
