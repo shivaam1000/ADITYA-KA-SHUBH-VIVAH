@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;500;600&display=swap">
 <style>
 :root{
-  --ivory:#F7F1E3; --card:#FBF7EC; --olive:#5B6B2F; --olive-deep:#3E4A1F; --olive-soft:#8A9560;
+  --ivory:#FBF8EF; --card:#FFFDF6; --gold-line:#B8892E; --olive-line:#4E5B2E; --olive:#5B6B2F; --olive-deep:#3E4A1F; --olive-soft:#8A9560;
   --gold:#B8962E; --gold-soft:#E7D8A6; --live:#8C2D2D;
   --display:'Tiro Devanagari Hindi',serif; --body:'Mukta','Noto Sans Devanagari',system-ui,sans-serif;
   color-scheme:light;
@@ -23,7 +23,16 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
   padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
 .wrap{max-width:520px;margin:0 auto}
-.frame{border:1px solid var(--gold-soft);outline:1px solid var(--gold-soft);outline-offset:4px;margin:14px 2px 0;padding:6px 10px 22px}
+.frame{position:relative;margin:6px 0 0;padding:40px 28px 44px}
+.frame::before,.frame::after{content:"";position:absolute;pointer-events:none}
+.frame::before{inset:12.5px;border:1.75px solid var(--gold-line)}
+.frame::after{inset:18.4px;border:.6px solid var(--olive-line)}
+.orn{position:absolute;width:80px;height:72px;background:url(assets/corner.png) no-repeat 0 0/80px 72px;pointer-events:none;z-index:1}
+.orn.tl{left:0;top:0}.orn.tr{right:0;top:0;transform:scaleX(-1)}.orn.bl{left:0;bottom:0;transform:scaleY(-1)}.orn.br{right:0;bottom:0;transform:scale(-1,-1)}
+.bar{position:absolute;left:50%;width:60px;height:5.5px;margin-left:-30px;background:var(--gold-line);z-index:1}
+.bar.t{top:10.5px}.bar.b{bottom:10.5px}
+.logo{display:block;width:min(72%,300px);height:auto;margin:6px auto 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .top{text-align:center;padding:22px 0 10px}
 .ganesh{font-family:var(--display);color:var(--gold);font-size:15px;letter-spacing:.04em;margin:0}
 .names{font-family:var(--display);font-weight:400;font-size:34px;line-height:1.25;color:var(--olive);margin:10px 0 0;text-wrap:balance}
@@ -75,10 +84,10 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 </style>
 </head>
 <body>
-<div class="wrap"><div class="frame" id="app">
+<div class="wrap"><div class="frame" id="app"><i class="orn tl"></i><i class="orn tr"></i><i class="orn bl"></i><i class="orn br"></i><i class="bar t"></i><i class="bar b"></i>
 <header class="top"><p class="ganesh">॥ श्री गणेशाय नमः ॥</p>
-<h1 class="names">आदित्य<span class="amp">&amp;</span>खुशबू</h1>
-<p class="event">शुभ विवाह · 21 नवम्बर 2026 · जोधपुर</p>
+<img class="logo" src="assets/logo.png" alt="" width="720" height="720"><h1 class="sr">आदित्य &amp; खुशबू</h1>
+<p class="event" style="margin-top:2px">शुभ विवाह · 21 नवम्बर 2026 · जोधपुर</p>
 <p class="doha">आदित्य की किरणें मिलीं, महकी खुशबू संग ।<br>शुभ तिथि पर आइए, भरने इनके जीवन में रंग ॥</p></header>
 <div class="hr"></div>
 <section class="cd" id="cd" hidden>
