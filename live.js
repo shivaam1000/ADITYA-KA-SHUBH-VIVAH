@@ -18,8 +18,8 @@
   L.marker(HOME,{icon:pin('pin-home.png','निवास','',true),zIndexOffset:500}).addTo(map);
   var mDhaba=L.marker(DHABA,{icon:pin('pin-dhaba.png','जय भवानी ढाबा','left')});
   var mVenue=L.marker(VENUE,{icon:pin('pin-venue.png','होटल कस्तूरी ऑर्किड','right'),zIndexOffset:600});
-  var route=L.polyline([HOME,DHABA,VENUE],{color:'#E7C46A',weight:3,dashArray:'5 7',opacity:.9});
-  var routeShown=false; function showRoute(){ if(routeShown) return; routeShown=true; mDhaba.addTo(map); mVenue.addTo(map); route.addTo(map); var fb=document.getElementById('fitall'); if(fb) fb.hidden=false; }
+  var route=L.polyline([HOME,DHABA,VENUE],{color:'#E7C46A',weight:3,dashArray:'5 7',opacity:.9}).addTo(map);
+  var routeShown=false; function showRoute(){ if(routeShown) return; routeShown=true; mDhaba.addTo(map); mVenue.addTo(map); var fb=document.getElementById('fitall'); if(fb) fb.hidden=false; }
   // real road route (OSRM); falls back to the straight dotted line
   fetch('https://router.project-osrm.org/route/v1/driving/'+[HOME,DHABA,VENUE].map(function(p){return p[1]+','+p[0];}).join(';')+'?overview=full&geometries=geojson')
     .then(function(r){return r.json();}).then(function(j){ if(j&&j.routes&&j.routes[0]) route.setLatLngs(j.routes[0].geometry.coordinates.map(function(c){return [c[1],c[0]];})); }).catch(function(){});
