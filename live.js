@@ -146,11 +146,11 @@
   function ago(t){var s=Math.round((Date.now()-t)/1000); if(s<15)return 'अभी'; if(s<60)return s+' सेकंड पहले'; var m=Math.round(s/60); return m<60? m+' मिनट पहले' : Math.round(m/60)+' घंटे पहले';}
 
   function setCap(txt,on){ if(cap){cap.textContent=txt; cap.className='mapcap'+(on?' on':'');} }
-  if(!DB||!KEY){ setCap('बारात प्रस्थान पर यहाँ चलती हुई दिखेगी',false); return; }
+  if(!DB||!KEY){ setCap('',false); return; }
 
   function poll(){
     fetch(DB+'/baraat/'+KEY+'/latest.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
-      if(!d||!d.lat){ setCap('बारात प्रस्थान पर यहाँ चलती हुई दिखेगी',false); return; }
+      if(!d||!d.lat){ setCap('',false); return; }
       var stale=Date.now()-d.t>3*60*1000, first=!last; last=d;
       if(!d.off){ showRoute(); if(!night && q!=='day') setMode(true); }
       // live: the baraat doha replaces the waiting status; stopped: show status again
@@ -161,7 +161,7 @@
       baraat.setLatLng([d.lat,d.lng]); acc.setLatLng([d.lat,d.lng]).setRadius(Math.min(d.acc||0,150));
       var toVenue=km([d.lat,d.lng],VENUE);
       if(dist) dist.textContent = toVenue<0.12 ? 'बारात विवाह स्थल पर पहुँच गई है' : 'विवाह स्थल से '+(toVenue<1? Math.round(toVenue*1000)+' मीटर' : toVenue.toFixed(1)+' km')+' दूर';
-      setCap(d.off ? 'ट्रैकिंग रुकी हुई है · आख़िरी स्थिति '+ago(d.t) : (stale ? 'सिग्नल नहीं मिल रहा · आख़िरी स्थिति '+ago(d.t) : 'बारात LIVE · '+ago(d.t)), !d.off && !stale);
+      setCap(d.off ? 'ट्रैकिंग रुकी हुई है · आख़िरी स्थिति '+ago(d.t) : (stale ? 'सिग्नल नहीं मिल रहा · आख़िरी स्थिति '+ago(d.t) : 'बारात लाइव · '+ago(d.t)), !d.off && !stale);
       if(follow){ if(first) map.setView([d.lat,d.lng],14); else map.panTo([d.lat,d.lng],{animate:true}); }
     }).catch(function(){});
   }
