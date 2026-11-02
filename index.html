@@ -13,8 +13,8 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <style>
 :root{
-  --ivory:#F7F1E3; --card:#F7F1E3; --ui:#FBF7EC; --gold-line:#B8892E; --olive-line:#4E5B2E; --olive:#5B6B2F; --olive-deep:#3E4A1F; --olive-soft:#8A9560;
-  --gold:#B8962E; --gold-soft:#E7D8A6; --live:#8C2D2D;
+  --ivory:#FBF8EF; --card:#FBF8EF; --ui:#FBF7EC; --gold-line:#B8892E; --olive-line:#4E5B2E; --olive:#4E5B2E; --olive-deep:#3E4A1F; --olive-soft:#5E6450;
+  --gold:#B8892E; --gold-soft:#E7D8A6; --live:#8C2D2D;
   --display:'Tiro Devanagari Hindi',serif; --body:'Mukta','Noto Sans Devanagari',system-ui,sans-serif;
   color-scheme:light;
 }
@@ -35,7 +35,7 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .hero .orn.tl{left:8px;top:8px}.hero .orn.tr{right:8px;top:8px}
 .sec{padding:18px max(16px,env(safe-area-inset-left,0px)) 20px;border-bottom:1px solid var(--gold-soft)}
 .sec h2{margin:0 0 10px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--body);font-weight:600;color:var(--olive-soft)}
-.topbar{position:sticky;top:0;z-index:4000;display:flex;align-items:center;justify-content:center;height:44px;padding:0 max(16px,env(safe-area-inset-left,0px));background:rgba(247,241,227,.94);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--gold-soft);max-width:720px;margin:0 auto;padding-top:env(safe-area-inset-top,0px);box-sizing:content-box}
+.topbar{position:sticky;top:0;z-index:4000;display:flex;align-items:center;justify-content:center;height:44px;padding:0 max(16px,env(safe-area-inset-left,0px));background:rgba(251,248,239,.94);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--gold-soft);max-width:720px;margin:0 auto;padding-top:env(safe-area-inset-top,0px);box-sizing:content-box}
 .tb-name{font-family:var(--display);font-size:18px;color:var(--olive)}
 .tb-name em{font-style:normal;color:var(--gold);font-size:15px;margin:0 4px}
 .tb-live{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--live)}
@@ -214,7 +214,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <header class="top hero"><i class="orn tl"></i><i class="orn tr"></i><p class="ganesh">॥ श्री गणेशाय नमः ॥</p>
 <img class="logo" src="assets/logo.png" alt="" width="720" height="720"><h1 class="sr">आदित्य संग खुशबू</h1>
 <p class="event hl" style="margin-top:2px">शुभ विवाह · शनिवार, 21 नवम्बर 2026 · जोधपुर</p>
-<div class="music" id="music"><button type="button" id="play"><img class="ico" src="assets/dhol.png" alt="" width="160" height="139"><span class="eq"><i></i><i></i><i></i></span><span id="playTxt">माहौल बनाइए</span></button><button type="button" class="yt" id="ytBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12" fill="none" stroke="#5B6B2F" stroke-width="1.8" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="#B8892E"/><circle cx="16.5" cy="16" r="2.5" fill="#B8892E"/></svg><span>संगीत सुनिए</span></button></div>
+<div class="music" id="music"><button type="button" id="play"><img class="ico" src="assets/dhol.png" alt="" width="160" height="139"><span class="eq"><i></i><i></i><i></i></span><span id="playTxt">माहौल बनाइए</span></button><button type="button" class="yt" id="ytBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12" fill="none" stroke="#4E5B2E" stroke-width="1.8" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="#B8892E"/><circle cx="16.5" cy="16" r="2.5" fill="#B8892E"/></svg><span>संगीत सुनिए</span></button></div>
 <div class="ytbox" id="ytbox" hidden></div>
 <audio id="aud" src="assets/shehnai.mp3?v=1793614150" loop preload="none"></audio>
 <div class="dohabox"><div class="crop"><img src="assets/doha.png" alt="आदित्य की किरणें मिलीं, महकी खुशबू संग ।" width="1400" height="288"></div><p class="dline">शुभ बेला में आइए, भरने जीवन-रंग ॥</p></div></header>
