@@ -89,7 +89,11 @@
       if(cvs.width!==Math.round(W)||cvs.height!==Math.round(H)){cvs.width=Math.round(W);cvs.height=Math.round(H);cvs.style.width=r.width+'px';cvs.style.height=r.height+'px';}
       var tw=W*1.5, th=tw*9/16, x=-(tw-W)/2, y=0, i=0;
       if(vid.readyState>=2){ cctx.clearRect(0,0,W,H);
-        while(y<H){ cctx.save(); if(i%2){ cctx.translate(0,y+th); cctx.scale(1,-1); cctx.drawImage(vid,x,0,tw,th); } else { cctx.drawImage(vid,x,y,tw,th); } cctx.restore(); y+=th; i++; }
+        var ov=th*0.22; // upright tiles, overlapping; the overlap is feathered in bands so no hard seam
+        while(y<H){ if(i===0){ cctx.drawImage(vid,x,y,tw,th); }
+          else { var bands=6, bh=ov/bands; for(var k=0;k<bands;k++){ cctx.save(); cctx.globalAlpha=(k+1)/(bands+1); cctx.beginPath(); cctx.rect(0,y+k*bh,W,bh); cctx.clip(); cctx.drawImage(vid,x,y,tw,th); cctx.restore(); }
+            cctx.save(); cctx.beginPath(); cctx.rect(0,y+ov,W,th-ov); cctx.clip(); cctx.drawImage(vid,x,y,tw,th); cctx.restore(); }
+          y+=th-ov; i++; }
         var g=cctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.35)'); cctx.fillStyle=g; cctx.fillRect(0,0,W,H); }
       raf=requestAnimationFrame(drawTiles); }
     function fit(){var r=mapEl.getBoundingClientRect(), full=mapEl.parentNode.classList.contains('full'), p=map.containerPointToLayerPoint([0,0]);
