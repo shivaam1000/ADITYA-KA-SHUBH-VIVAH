@@ -109,11 +109,15 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .mapwrap.full{position:fixed;inset:0;z-index:5000;margin:0;border:0;outline:0;background:#141a20}
 .mapwrap.full .livemap{height:100%;width:100%}
 .mapwrap.full .recenter{left:max(12px,env(safe-area-inset-left,0px));bottom:max(16px,env(safe-area-inset-bottom,0px))}
-.mapwrap.full .fitall{right:max(12px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px))}
+.mapwrap.full .modebtn{position:absolute;right:8px;top:8px;z-index:600;width:36px;height:36px;border-radius:50%;border:1px solid var(--gold);background:var(--card);font-size:17px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.mapwrap.full .modebtn{top:calc(12px + env(safe-area-inset-top,0px));right:auto;left:max(12px,env(safe-area-inset-left,0px))}
+.fitall{right:max(12px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px))}
 .mapclose{position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:calc(12px + env(safe-area-inset-top,0px));z-index:600;height:38px;padding:0 14px;border-radius:19px;border:1px solid var(--gold);background:var(--card);color:var(--olive);font:600 14px var(--body);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4)}
 .maphint{position:absolute;left:50%;top:8px;transform:translateX(-50%);z-index:500;font:500 11px var(--body);color:#F2E3B3;background:rgba(20,26,32,.55);padding:3px 10px;border-radius:12px;pointer-events:none;white-space:nowrap}
 .mapwrap.full .maphint{display:none}
 body.mapfull{overflow:hidden}
+.modebtn{position:absolute;right:8px;top:8px;z-index:600;width:36px;height:36px;border-radius:50%;border:1px solid var(--gold);background:var(--card);font-size:17px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.mapwrap.full .modebtn{top:calc(12px + env(safe-area-inset-top,0px));right:auto;left:max(12px,env(safe-area-inset-left,0px))}
 .fitall{position:absolute;right:8px;bottom:8px;z-index:500;height:34px;padding:0 10px;border-radius:17px;border:1px solid var(--gold);background:var(--card);color:var(--olive);font:600 12px var(--body);cursor:pointer}
 .recenter{position:absolute;left:8px;bottom:8px;z-index:500;height:36px;padding:0 12px 0 10px;border-radius:18px;border:1px solid var(--gold);background:var(--olive);color:var(--ivory);font:600 13px var(--body);cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
 .recenter span{font-size:13px}
@@ -222,7 +226,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <section class="status sec"><span class="live"><i></i>Baraat Live</span>
 <p class="label">बारात अभी यहाँ है</p><p class="where" id="where">बारात अभी प्रस्थान नहीं हुई है</p>
 <p class="note" id="note">बारात प्रस्थान करते ही यहाँ live location और updates मिलते रहेंगे।</p>
-<div class="mapwrap"><div id="livemap" class="livemap"></div><button type="button" class="recenter" id="recenter" title="बारात पर लौटें">◎ <span>बारात कहाँ है?</span></button><button type="button" class="fitall" id="fitall">पूरा मार्ग</button><button type="button" class="mapclose" id="mapclose" hidden>✕ बंद करें</button><div class="maphint" id="maphint">बड़ा देखने के लिए map पर tap करें</div></div>
+<div class="mapwrap"><div id="livemap" class="livemap"></div><button type="button" class="recenter" id="recenter" title="बारात पर लौटें">◎ <span>बारात कहाँ है?</span></button><button type="button" class="fitall" id="fitall">पूरा मार्ग</button><button type="button" class="modebtn" id="modebtn" title="दिन / रात">🌙</button><button type="button" class="mapclose" id="mapclose" hidden>✕ बंद करें</button><div class="maphint" id="maphint">बड़ा देखने के लिए map पर tap करें</div></div>
 <p class="mapcap" id="mapcap">बारात प्रस्थान पर यहाँ चलती हुई दिखेगी</p>
 <div class="navrow"><button type="button" class="btn navbtn" id="navbtn">🧭 बारात तक पहुँचें</button><p class="navinfo" id="navinfo" hidden></p><a class="navlink" id="navlink" href="https://www.google.com/maps/dir/?api=1&destination=26.281493753195598,72.98599529580494&travelmode=driving" target="_blank" rel="noopener">Google Maps में नेविगेट करें →</a></div>
 <p class="mapdist" id="mapdist"></p>
@@ -319,7 +323,7 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793594032"></script>
-<script src="live.js?v=1793594032"></script>
+<script src="config.js?v=1793594090"></script>
+<script src="live.js?v=1793594090"></script>
 </body>
 </html>

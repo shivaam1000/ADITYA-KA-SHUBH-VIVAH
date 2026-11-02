@@ -29,8 +29,11 @@
   function setMode(n){ night=n; document.body.classList.toggle('night',n); document.body.classList.toggle('day',!n);
     if(n){ map.removeLayer(dayTiles); map.removeLayer(dayLabels); nightTiles.addTo(map); } else { map.removeLayer(nightTiles); dayTiles.addTo(map); dayLabels.addTo(map); }
     if(window.__skySet) window.__skySet(n);
-    if(window.__routeStyle) window.__routeStyle(n); }
+    if(window.__routeStyle) window.__routeStyle(n); if(typeof paintModeBtn==='function') paintModeBtn(); }
   setMode(night);
+  var modeBtn=document.getElementById('modebtn');
+  function paintModeBtn(){ if(modeBtn) modeBtn.textContent=night?'☀️':'🌙'; }
+  if(modeBtn){ modeBtn.addEventListener('click',function(e){ e.stopPropagation(); setMode(!night); paintModeBtn(); }); paintModeBtn(); }
   
   function pin(img,label,side,big){var w=big?62:54,h=Math.round(w*1.15);
     var L1='<img class="pinimg" src="assets/'+img+'" width="'+w+'" height="'+h+'" alt="">',L2='<div class="pinlbl">'+label+'</div>';var html,size,anc;
