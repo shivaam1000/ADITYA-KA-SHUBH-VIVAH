@@ -59,7 +59,7 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .where{font-family:var(--display);font-size:21px;margin-top:6px;line-height:1.3;color:var(--olive);margin:0;overflow-wrap:anywhere}
 .note{margin:6px 0 0}
 .where.wait{font-family:var(--display);font-size:19px;line-height:1.6;color:var(--olive);margin:6px 0 4px;text-align:center;text-wrap:balance}
-.where.wait span{display:block}
+.where.wait img{display:block;width:100%;max-width:440px;height:auto;margin:4px auto 0}
 .where.wait i{display:block;width:120px;height:1px;margin:5px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .doha2{font-family:var(--display);font-size:19px;line-height:1.6;color:var(--olive);margin:6px 0 4px;text-wrap:balance;text-align:center}
 .doha2 img{display:block;width:min(100%,400px);height:auto;margin:0 auto}
@@ -233,7 +233,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 })();
 </script>
 <section class="status sec"><span class="live"><i></i>Baraat Live</span>
-<div class="where wait" id="where"><span>इंतज़ार की घड़ियाँ गिन रही हैं ढोल की थाप,</span><i></i><span>शनिवार शाम 5:30 — बरात चलेगी आपके साथ।</span></div>
+<div class="where wait" id="where"><img src="assets/doha-wait.png" alt="इंतज़ार की घड़ियाँ गिन रही हैं ढोल की थाप, शनिवार 21 नवम्बर, शाम 5:30 — बरात चलेगी आपके साथ।" width="1400" height="174"></div>
 <p class="note" id="note" hidden></p>
 <div class="doha2" id="doha2" hidden><img src="assets/doha-baraat.png" alt="गाजे-बाजे संग में, निकली आज बरात। दूल्हे राजा ला रहे, खुशियों की सौगात॥" width="1400" height="361"></div>
 <div class="mapwrap"><div id="livemap" class="livemap"></div><button type="button" class="recenter" id="recenter" title="बारात पर लौटें">◎ <span>बारात कहाँ है?</span></button><button type="button" class="fitall" id="fitall">पूरा मार्ग</button><button type="button" class="modebtn" id="modebtn" title="दिन / रात">🌙</button><button type="button" class="mapclose" id="mapclose" hidden>✕ बंद करें</button><div class="maphint" id="maphint">बड़ा देखने के लिए map पर tap करें</div></div>
@@ -333,7 +333,7 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793631283"></script>
-<script src="live.js?v=1793631283"></script>
+<script src="config.js?v=1793631417"></script>
+<script src="live.js?v=1793631417"></script>
 </body>
 </html>
