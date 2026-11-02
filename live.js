@@ -155,7 +155,7 @@
       if(!d.off){ showRoute(); if(!night && q!=='day') setMode(true); }
       // live: the baraat doha replaces the waiting status; stopped: show status again
       var dh=document.getElementById('doha2'), wh=document.getElementById('where'), nt=document.getElementById('note');
-      if(dh&&wh){ if(!d.off){ dh.hidden=false; wh.hidden=true; if(nt) nt.hidden=true; } else { dh.hidden=true; wh.hidden=false; wh.textContent='बारात विवाह स्थल पर पहुँच गई है'; } }
+      if(dh&&wh){ if(!d.off){ dh.hidden=false; wh.hidden=true; if(nt) nt.hidden=true; } else { dh.hidden=true; wh.hidden=false; wh.classList.remove('wait'); wh.textContent='बारात विवाह स्थल पर पहुँच गई है'; } }
       if(navOn&&mePos&&!drawNav.pending){ drawNav.pending=true; setTimeout(function(){drawNav.pending=false; drawNav();},5000); }
       if(!map.hasLayer(baraat)){baraat.addTo(map); acc.addTo(map);}
       baraat.setLatLng([d.lat,d.lng]); acc.setLatLng([d.lat,d.lng]).setRadius(Math.min(d.acc||0,150));
