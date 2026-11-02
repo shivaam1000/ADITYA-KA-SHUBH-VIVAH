@@ -8,6 +8,12 @@
 <meta property="og:title" content="सजीव वरयात्रा · आदित्य संग खुशबू">
 <meta property="og:description" content="बारात की लाइव लोकेशन और हर ख़बर यहाँ">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F7F1E3'/%3E%3Ccircle cx='32' cy='32' r='14' fill='%235B6B2F'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#FBF8EF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="बारात Live">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;500;600&family=Eczar:wght@600&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
@@ -165,6 +171,7 @@ body.mapfull{overflow:hidden}
 .tels{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 18px}
 .tels a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--olive-deep);font-size:17px;font-variant-numeric:tabular-nums}
 .tels a b{font-weight:600;letter-spacing:.02em}
+.iosHint{margin:10px 0 0;font-size:13px;color:var(--olive-deep);background:var(--ui,#FBF7EC);border:1px solid var(--gold-soft);padding:10px 12px;border-radius:6px;text-align:center}
 .btn.ghost{background:transparent;color:var(--olive);border:1px solid var(--olive-soft);cursor:pointer;margin-top:18px}
 .btn.off{opacity:.45;pointer-events:none}
 h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);margin:0 0 8px}
@@ -305,6 +312,8 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <a href="tel:+919950544775"><span>📞</span><b>99505 44775</b></a>
 </div>
 </div>
+<button type="button" class="btn ghost" id="installBtn" hidden>📲 Phone में App की तरह रखें</button>
+<div class="iosHint" id="iosHint" hidden>iPhone पर: नीचे <b>Share</b> (⬆️) दबाइए → <b>Add to Home Screen</b> → Add। Home screen पर "बारात Live" का icon आ जाएगा।</div>
 <button type="button" class="btn ghost" id="share">📤 यह पेज WhatsApp पर भेजें</button>
 </section>
 <footer class="footer"><p class="foot">स्वागताकांक्षी<span class="fam">बिड़ला परिवार</span><small>यह पेज अपने-आप अपडेट होता रहता है</small></p></footer>
@@ -378,8 +387,8 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793642181"></script>
-<script src="live.js?v=1793642181"></script>
+<script src="config.js?v=1793649321"></script>
+<script src="live.js?v=1793649321"></script>
 <script>
 (function(){
   var NUM=''; // family WhatsApp number: country code + 10 digits, e.g. '919876543210' (left blank for now)
@@ -399,6 +408,21 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 (function(){ var ALBUM=''; var a=document.getElementById('albumAdd'),b=document.getElementById('albumSee'),n=document.getElementById('albumNote'); if(!a) return;
   if(ALBUM){ a.href=ALBUM; b.href=ALBUM; a.target='_blank'; b.target='_blank'; if(n) n.textContent='Google Photos में खुलेगा — वहाँ + दबाकर अपनी फ़ोटो चुनिए।'; }
   else { [a,b].forEach(function(x){ x.addEventListener('click',function(e){ e.preventDefault(); if(n) n.textContent='Album का link जल्द जुड़ेगा।'; }); }); }
+})();
+</script>
+<script>
+(function(){
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
+  var btn=document.getElementById('installBtn'), hint=document.getElementById('iosHint'), deferred=null;
+  var standalone=window.matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;
+  if(standalone) return;
+  window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferred=e; btn.hidden=false; });
+  var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+  if(isIOS){ btn.hidden=false; }
+  btn.addEventListener('click',function(){
+    if(deferred){ deferred.prompt(); deferred.userChoice.then(function(){ deferred=null; btn.hidden=true; }); }
+    else if(isIOS){ hint.hidden=!hint.hidden; }
+  });
 })();
 </script>
 </body>
