@@ -81,15 +81,22 @@
     vid.src='assets/sky.mp4?v=2'; vid.poster='assets/sky.jpg'; vid.muted=true; vid.loop=true; vid.autoplay=!(reduce||saveData); vid.preload='auto';
     vid.setAttribute('muted',''); vid.setAttribute('playsinline',''); vid.setAttribute('webkit-playsinline',''); vid.setAttribute('aria-hidden','true');
     pane.appendChild(vid);
-    window.__skySet=function(n){ vid.style.display=n?'block':'none'; if(n){ var pp=vid.play(); if(pp&&pp.catch) pp.catch(function(){}); } else vid.pause(); };
+    window.__skySet=function(n){ vid.style.display=n?'block':'none'; pane.style.display=n?'block':'none'; if(n){ var pp=vid.play(); if(pp&&pp.catch) pp.catch(function(){}); } else vid.pause(); };
     window.__skySet(night);
+    // full-screen: tile the footage on a canvas (crisp, whole screen), small map: plain video
+    var cvs=document.createElement('canvas'); cvs.className='skytile'; cvs.style.display='none'; pane.appendChild(cvs); var cctx=cvs.getContext('2d'), tiling=false, raf=0;
+    function drawTiles(){ if(!tiling) return; var r=mapEl.getBoundingClientRect(), dpr=Math.min(2,devicePixelRatio||1), W=r.width*dpr, H=r.height*dpr;
+      if(cvs.width!==Math.round(W)||cvs.height!==Math.round(H)){cvs.width=Math.round(W);cvs.height=Math.round(H);cvs.style.width=r.width+'px';cvs.style.height=r.height+'px';}
+      var tw=W*1.5, th=tw*9/16, x=-(tw-W)/2, y=0, i=0;
+      if(vid.readyState>=2){ cctx.clearRect(0,0,W,H);
+        while(y<H){ cctx.save(); if(i%2){ cctx.translate(0,y+th); cctx.scale(1,-1); cctx.drawImage(vid,x,0,tw,th); } else { cctx.drawImage(vid,x,y,tw,th); } cctx.restore(); y+=th; i++; }
+        var g=cctx.createLinearGradient(0,0,0,H); g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.35)'); cctx.fillStyle=g; cctx.fillRect(0,0,W,H); }
+      raf=requestAnimationFrame(drawTiles); }
     function fit(){var r=mapEl.getBoundingClientRect(), full=mapEl.parentNode.classList.contains('full'), p=map.containerPointToLayerPoint([0,0]);
-      if(full && r.height>r.width*0.9){ // portrait full screen: keep the footage near its native scale, as a sky band at the top
-        var w=Math.max(r.width*1.45, r.height*16/9*0.55), h=w*9/16; vid.style.width=w+'px'; vid.style.height=h+'px'; vid.classList.add('band');
-        L.DomUtil.setPosition(vid,L.point(p.x-(w-r.width)/2, p.y)); }
-      else { vid.style.width=r.width+'px'; vid.style.height=r.height+'px'; vid.classList.remove('band'); L.DomUtil.setPosition(vid,p); } }
+      if(full && r.height>r.width*0.95){ tiling=true; vid.style.visibility='hidden'; cvs.style.display='block'; L.DomUtil.setPosition(cvs,p); cancelAnimationFrame(raf); drawTiles(); }
+      else { tiling=false; cancelAnimationFrame(raf); cvs.style.display='none'; vid.style.visibility='visible'; vid.style.width=r.width+'px'; vid.style.height=r.height+'px'; L.DomUtil.setPosition(vid,p); } }
     map.on('move viewreset resize',fit); addEventListener('resize',fit); fit();
-    map.on('zoomstart',function(){vid.style.visibility='hidden';}); map.on('zoomend',function(){fit();vid.style.visibility='visible';});
+    map.on('zoomstart',function(){vid.style.visibility='hidden';cvs.style.visibility='hidden';}); map.on('zoomend',function(){cvs.style.visibility='visible';fit();});
     if(reduce||saveData) return;
     function tryPlay(){ var p=vid.play(); if(p&&p.then) p.then(function(){ if(tap) tap.hidden=true; }).catch(function(){ if(tap) tap.hidden=false; }); }
     if(tap) tap.addEventListener('click',function(e){ e.stopPropagation(); tryPlay(); });
