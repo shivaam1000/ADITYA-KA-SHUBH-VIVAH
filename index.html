@@ -148,6 +148,11 @@ body.mapfull{overflow:hidden}
 .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .rsvp{text-align:center;padding:4px 0 0;margin:0}
 .teb{display:block;width:min(78%,300px);height:auto;margin:0 auto 12px}
+.albumbox{text-align:center}
+.thumbs{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:0 0 12px}
+.thumbs i{display:block;aspect-ratio:1;background:linear-gradient(135deg,var(--gold-soft),var(--ivory));border:1px solid var(--gold-soft)}
+.album .row{display:flex;gap:8px;flex-wrap:wrap}
+.album .row .btn{flex:1;margin-top:0}
 .bsub{margin:0 0 10px;font-size:14px;color:var(--olive-soft);text-align:center}
 .bless .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px;justify-content:center}
 .bless .chip{border:1px solid var(--gold);background:transparent;color:var(--olive);padding:6px 11px;font:500 13px var(--body);cursor:pointer;border-radius:999px}
@@ -278,6 +283,12 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <section class="sec"><h2 class="ttl">बारात की ताज़ा ख़बर</h2>
 <div id="updates"><p class="empty">अभी कोई सूचना नहीं — बारात के समय यहाँ देखते रहिए।</p></div>
 </section>
+<section class="sec album"><h2 class="ttl">बारात की यादें</h2>
+<p class="bsub">आपके कैमरे में जो पल क़ैद हुए, उन्हें परिवार के साझा album में जोड़िए — सबकी तस्वीरें एक जगह।</p>
+<div class="albumbox"><div class="thumbs"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<div class="row"><a class="btn" id="albumAdd" href="#" rel="noopener">📸 अपनी फ़ोटो जोड़िए</a><a class="btn ghost" id="albumSee" href="#" rel="noopener">सब फ़ोटो देखिए</a></div>
+<p class="bnote" id="albumNote">Album का link जल्द जुड़ेगा।</p></div>
+</section>
 <section class="sec bless"><h2 class="ttl">नवयुगल को आशीर्वाद</h2>
 <p class="bsub">अपना आशीर्वाद / शुभकामना लिखिए — सीधे परिवार के WhatsApp पर पहुँचेगा।</p>
 <div class="chips" id="bchips"><button type="button" class="chip">सदा सुखी रहो</button><button type="button" class="chip">जुग-जुग जियो</button><button type="button" class="chip">नया जीवन मंगलमय हो</button><button type="button" class="chip">बहुत-बहुत बधाई</button></div>
@@ -367,8 +378,8 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793641907"></script>
-<script src="live.js?v=1793641907"></script>
+<script src="config.js?v=1793642181"></script>
+<script src="live.js?v=1793642181"></script>
 <script>
 (function(){
   var NUM=''; // family WhatsApp number: country code + 10 digits, e.g. '919876543210' (left blank for now)
@@ -382,6 +393,12 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
     var text='🙏 आदित्य संग खुशबू — आशीर्वाद\n\n'+msg+(who?'\n\n— '+who:'');
     window.open('https://wa.me/'+NUM+'?text='+encodeURIComponent(text),'_blank');
   });
+})();
+</script>
+<script>
+(function(){ var ALBUM=''; var a=document.getElementById('albumAdd'),b=document.getElementById('albumSee'),n=document.getElementById('albumNote'); if(!a) return;
+  if(ALBUM){ a.href=ALBUM; b.href=ALBUM; a.target='_blank'; b.target='_blank'; if(n) n.textContent='Google Photos में खुलेगा — वहाँ + दबाकर अपनी फ़ोटो चुनिए।'; }
+  else { [a,b].forEach(function(x){ x.addEventListener('click',function(e){ e.preventDefault(); if(n) n.textContent='Album का link जल्द जुड़ेगा।'; }); }); }
 })();
 </script>
 </body>
