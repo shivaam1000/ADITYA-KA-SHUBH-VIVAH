@@ -111,6 +111,14 @@ body.mapfull{overflow:hidden}
 .recenter{position:absolute;left:8px;bottom:8px;z-index:500;height:36px;padding:0 12px 0 10px;border-radius:18px;border:1px solid var(--gold);background:var(--olive);color:var(--ivory);font:600 13px var(--body);cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
 .recenter span{font-size:13px}
 .mapcap{margin:10px 0 0;font-size:13px;color:var(--olive-soft)}
+.navrow{margin-top:12px}
+.navbtn{margin-top:0;background:var(--olive-deep)}
+.navbtn.on{background:var(--live)}
+.navinfo{margin:8px 0 0;font-family:var(--display);font-size:18px;color:var(--olive)}
+.navlink{display:inline-block;margin-top:6px;font-size:13px;color:var(--olive);text-decoration:underline;text-underline-offset:3px}
+.mepin{position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+.mepin i{width:16px;height:16px;border-radius:50%;background:#2F7BFF;border:3px solid #fff;box-shadow:0 0 0 0 rgba(47,123,255,.5);animation:ring 1.8s infinite}
+.mepin span{position:absolute;top:30px;left:50%;transform:translateX(-50%);background:#2F7BFF;color:#fff;font:600 10px var(--body);padding:1px 6px;border-radius:3px;white-space:nowrap}
 .mapcap.on{color:var(--live);font-weight:600}
 .maplegend{margin:4px 0 0;font-size:12px;color:var(--olive-soft)}
 .maplegend b{display:inline-flex;width:18px;height:18px;border-radius:50%;border:1px solid var(--gold);align-items:center;justify-content:center;font-size:11px;color:var(--olive);vertical-align:middle}
@@ -209,6 +217,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <p class="note" id="note">बारात प्रस्थान करते ही यहाँ live location और updates मिलते रहेंगे।</p>
 <div class="mapwrap"><div id="livemap" class="livemap"></div><button type="button" class="skytap" id="skytap" hidden>▶ जगमग चालू करें</button><button type="button" class="recenter" id="recenter" title="बारात पर लौटें">◎ <span>बारात कहाँ है?</span></button><button type="button" class="fitall" id="fitall">पूरा मार्ग</button><button type="button" class="mapclose" id="mapclose" hidden>✕ बंद करें</button><div class="maphint" id="maphint">बड़ा देखने के लिए map पर tap करें</div></div>
 <p class="mapcap" id="mapcap">बारात प्रस्थान पर यहाँ चलती हुई दिखेगी</p>
+<div class="navrow"><button type="button" class="btn navbtn" id="navbtn">🧭 बारात तक पहुँचें</button><p class="navinfo" id="navinfo" hidden></p><a class="navlink" id="navlink" href="https://www.google.com/maps/dir/?api=1&destination=26.281493753195598,72.98599529580494&travelmode=driving" target="_blank" rel="noopener">Google Maps में नेविगेट करें →</a></div>
 <p class="mapdist" id="mapdist"></p>
 <p class="stamp" id="stamp" hidden></p>
 <a class="btn off" id="map" href="#" rel="noopener">📍 Live location जल्द ही</a>
@@ -303,7 +312,7 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793566960"></script>
-<script src="live.js?v=1793566960"></script>
+<script src="config.js?v=1793592105"></script>
+<script src="live.js?v=1793592105"></script>
 </body>
 </html>
