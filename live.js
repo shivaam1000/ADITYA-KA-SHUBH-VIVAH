@@ -58,14 +58,15 @@
   // real road route (OSRM); falls back to the straight dotted line
   fetch('https://router.project-osrm.org/route/v1/driving/'+[HOME,DHABA,VENUE].map(function(p){return p[1]+','+p[0];}).join(';')+'?overview=full&geometries=geojson')
     .then(function(r){return r.json();}).then(function(j){ if(j&&j.routes&&j.routes[0]){ var ll=j.routes[0].geometry.coordinates.map(function(c){return [c[1],c[0]];}); route.setLatLngs(ll); routeShadow.setLatLngs(ll);} }).catch(function(){});
-  var bounds=L.latLngBounds([HOME,DHABA,VENUE]).pad(0.3);
-  map.fitBounds(bounds);
-  var fitBtn=document.getElementById('fitall'); if(fitBtn){ fitBtn.onclick=function(){follow=false; clearTimeout(idleT); map.fitBounds(bounds); armIdle();}; }
+  var bounds=L.latLngBounds([HOME,DHABA,VENUE]).pad(0.12);
+  var FIT={paddingTopLeft:[30,95],paddingBottomRight:[30,40]};
+  map.fitBounds(bounds,FIT);
+  var fitBtn=document.getElementById('fitall'); if(fitBtn){ fitBtn.onclick=function(){follow=false; clearTimeout(idleT); map.fitBounds(bounds,FIT); armIdle();}; }
   var baraat=L.marker(HOME,{icon:L.divIcon({className:'',html:'<div class="pinwrap live"><div class="pin">बारात</div></div>',iconSize:[60,60],iconAnchor:[30,22]}),zIndexOffset:1000});
   var trail=L.polyline([],{pane:'routePane',color:night?'#FFF3C4':'#5B6B2F',weight:5,opacity:.95,lineCap:'round'}).addTo(map); window.__trail=trail;
   var acc=L.circle(HOME,{pane:'routePane',radius:0,color:'#F2E3B3',weight:1,fillOpacity:.12});
   var follow=true, idleT=null;
-  function goBaraat(){ follow=true; if(last&&last.lat){ map.setView([last.lat,last.lng],Math.max(map.getZoom(),14)); } else { map.fitBounds(bounds); } }
+  function goBaraat(){ follow=true; if(last&&last.lat){ map.setView([last.lat,last.lng],Math.max(map.getZoom(),14)); } else { map.fitBounds(bounds,FIT); } }
   function armIdle(){ clearTimeout(idleT); idleT=setTimeout(function(){ if(!navOn) goBaraat(); },8000); }
   map.on('dragstart zoomstart',function(e){ if(e.originalEvent){ follow=false; armIdle(); } });
   map.on('dragend zoomend',function(){ if(!follow) armIdle(); });
