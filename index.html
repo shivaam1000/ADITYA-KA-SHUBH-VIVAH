@@ -185,6 +185,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 .music .yt{background:transparent;cursor:pointer;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gold);color:var(--olive);padding:8px 16px;font:500 14px var(--body);text-decoration:none;border-radius:999px}
 .music button{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--gold);color:var(--olive);padding:8px 16px;font:500 14px var(--body);cursor:pointer;border-radius:999px}
 .music button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.music .ico{width:22px;height:22px;flex:none}
 .music .eq{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
 .music .eq i{width:2px;background:var(--gold);height:4px}
 .music.on .eq i{animation:eq .9s ease-in-out infinite alternate}
@@ -199,7 +200,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <header class="top hero"><i class="orn tl"></i><i class="orn tr"></i><p class="ganesh">॥ श्री गणेशाय नमः ॥</p>
 <img class="logo" src="assets/logo.png" alt="" width="720" height="720"><h1 class="sr">आदित्य &amp; खुशबू</h1>
 <p class="event hl" style="margin-top:2px">शुभ विवाह · शनिवार, 21 नवम्बर 2026 · जोधपुर</p>
-<div class="music" id="music"><button type="button" id="play"><span class="eq"><i></i><i></i><i></i></span><span id="playTxt">🎵 शहनाई बजाएँ</span></button><button type="button" class="yt" id="ytBtn">🎶 बारात का गाना</button></div>
+<div class="music" id="music"><button type="button" id="play"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#B8892E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5h11l4-2.5v6l-4-2.5"/><path d="M18 9c2-1 3-1.5 3-1.5v9s-1-.5-3-1.5"/><path d="M3 11.5c-.8 0-1.2.5-1.2 1s.4 1 1.2 1h11v-2"/></g><g fill="#5B6B2F"><circle cx="6" cy="12.5" r=".9"/><circle cx="8.5" cy="12.5" r=".9"/><circle cx="11" cy="12.5" r=".9"/></g><path d="M20 6.5c.6-1 .6-2 0-3M22 7.5c1-1.6 1-3.4 0-5" fill="none" stroke="#5B6B2F" stroke-width="1.4" stroke-linecap="round"/></svg><span class="eq"><i></i><i></i><i></i></span><span id="playTxt">शहनाई बजाएँ</span></button><button type="button" class="yt" id="ytBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12" fill="none" stroke="#5B6B2F" stroke-width="1.8" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="#B8892E"/><circle cx="16.5" cy="16" r="2.5" fill="#B8892E"/></svg><span>बारात का गाना</span></button></div>
 <div class="ytbox" id="ytbox" hidden></div>
 <audio id="aud" src="assets/shehnai.mp3?v=1793614150" loop preload="none"></audio>
 <img class="doha-img" src="assets/doha.png" alt="आदित्य की किरणें मिलीं, महकी खुशबू संग । शुभ तिथि पर आइए, भरने इनके जीवन में रंग ॥" width="1400" height="288"></header>
@@ -300,12 +301,12 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 </script>
 <script>
 (function(){var a=document.getElementById('aud'),w=document.getElementById('music'),b=document.getElementById('play'),t=document.getElementById('playTxt');
-b.addEventListener('click',function(){ if(a.paused){a.play().then(function(){w.classList.add('on');t.textContent='⏸ रोकें';}).catch(function(){t.textContent='🎵 फिर दबाएँ';}); } else {a.pause();w.classList.remove('on');t.textContent='🎵 शहनाई बजाएँ';} });
+b.addEventListener('click',function(){ if(a.paused){a.play().then(function(){w.classList.add('on');t.textContent='रोकें';}).catch(function(){t.textContent='फिर दबाएँ';}); } else {a.pause();w.classList.remove('on');t.textContent='शहनाई बजाएँ';} });
 document.getElementById('ytBtn').addEventListener('click',function(){var box=document.getElementById('ytbox');
- if(box.hidden){ if(!a.paused){a.pause();w.classList.remove('on');t.textContent='🎵 शहनाई बजाएँ';}
-  box.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/JtKjcyc5wh0?autoplay=1&playsinline=1&rel=0" title="बारात का गाना" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>'; box.hidden=false; this.textContent='✕ गाना बंद करें'; box.scrollIntoView({behavior:'smooth',block:'center'}); }
- else { box.innerHTML=''; box.hidden=true; this.textContent='🎶 बारात का गाना'; } });
-a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='🎵 शहनाई बजाएँ';});})();
+ if(box.hidden){ if(!a.paused){a.pause();w.classList.remove('on');t.textContent='शहनाई बजाएँ';}
+  box.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/JtKjcyc5wh0?autoplay=1&playsinline=1&rel=0" title="बारात का गाना" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>'; box.hidden=false; this.querySelector('span').textContent='✕ गाना बंद करें'; box.scrollIntoView({behavior:'smooth',block:'center'}); }
+ else { box.innerHTML=''; box.hidden=true; this.querySelector('span').textContent='बारात का गाना'; } });
+a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='शहनाई बजाएँ';});})();
 </script>
 <script>
 (function(){
@@ -325,7 +326,7 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793615465"></script>
-<script src="live.js?v=1793615465"></script>
+<script src="config.js?v=1793615797"></script>
+<script src="live.js?v=1793615797"></script>
 </body>
 </html>
