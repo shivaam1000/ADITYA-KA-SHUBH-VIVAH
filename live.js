@@ -20,6 +20,11 @@
   var dayTiles = useMT ? mt(DAY_STYLE,'daytiles'+(STYLE?' raw':'')) : L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR,className:'daytiles'});
   var dayLabels = useMT ? L.layerGroup() : L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',className:'daylabels',pane:'shadowPane'});
   var nightTiles = useMT ? mt(NIGHT_STYLE,'nighttiles') : L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR});
+  // if MapTiler tiles fail (key/origin issue), fall back to CARTO so the map is never blank
+  if(useMT){ var mtFails=0; [dayTiles,nightTiles].forEach(function(t){ t.on('tileerror',function(){ if(++mtFails>=3 && useMT){ useMT=false;
+      var d=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR,className:'daytiles'});
+      var n=L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR});
+      map.removeLayer(dayTiles); map.removeLayer(nightTiles); dayTiles=d; nightTiles=n; (night?n:d).addTo(map); console.warn('MapTiler tiles failed; using CARTO'); } }); }); }
   var wrapEl=mapEl.parentNode;
   function setMode(n){ night=n; document.body.classList.toggle('night',n); document.body.classList.toggle('day',!n);
     if(n){ map.removeLayer(dayTiles); map.removeLayer(dayLabels); nightTiles.addTo(map); } else { map.removeLayer(nightTiles); dayTiles.addTo(map); dayLabels.addTo(map); }
