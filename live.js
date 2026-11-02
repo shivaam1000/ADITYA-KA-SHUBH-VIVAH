@@ -83,7 +83,11 @@
     pane.appendChild(vid);
     window.__skySet=function(n){ vid.style.display=n?'block':'none'; if(n){ var pp=vid.play(); if(pp&&pp.catch) pp.catch(function(){}); } else vid.pause(); };
     window.__skySet(night);
-    function fit(){var r=mapEl.getBoundingClientRect();vid.style.width=r.width+'px';vid.style.height=r.height+'px';L.DomUtil.setPosition(vid,map.containerPointToLayerPoint([0,0]));}
+    function fit(){var r=mapEl.getBoundingClientRect(), full=mapEl.parentNode.classList.contains('full'), p=map.containerPointToLayerPoint([0,0]);
+      if(full && r.height>r.width*0.9){ // portrait full screen: keep the footage near its native scale, as a sky band at the top
+        var w=Math.max(r.width*1.45, r.height*16/9*0.55), h=w*9/16; vid.style.width=w+'px'; vid.style.height=h+'px'; vid.classList.add('band');
+        L.DomUtil.setPosition(vid,L.point(p.x-(w-r.width)/2, p.y)); }
+      else { vid.style.width=r.width+'px'; vid.style.height=r.height+'px'; vid.classList.remove('band'); L.DomUtil.setPosition(vid,p); } }
     map.on('move viewreset resize',fit); addEventListener('resize',fit); fit();
     map.on('zoomstart',function(){vid.style.visibility='hidden';}); map.on('zoomend',function(){fit();vid.style.visibility='visible';});
     if(reduce||saveData) return;
