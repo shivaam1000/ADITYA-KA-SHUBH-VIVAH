@@ -148,6 +148,15 @@ body.mapfull{overflow:hidden}
 .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .rsvp{text-align:center;padding:4px 0 0;margin:0}
 .teb{display:block;width:min(78%,300px);height:auto;margin:0 auto 12px}
+.bsub{margin:0 0 10px;font-size:14px;color:var(--olive-soft);text-align:center}
+.bless .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 4px;justify-content:center}
+.bless .chip{border:1px solid var(--gold);background:transparent;color:var(--olive);padding:6px 11px;font:500 13px var(--body);cursor:pointer;border-radius:999px}
+.bless .f{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.bless label{font-size:13px;font-weight:600;color:var(--olive)}
+.bless input,.bless textarea{width:100%;box-sizing:border-box;border:1px solid var(--gold-soft);background:var(--ui,#fff);color:var(--olive-deep);padding:10px;font:16px var(--body);border-radius:4px}
+.bless textarea{min-height:84px;resize:vertical}
+.bless .btn{margin-top:12px;background:#1E7F4C;color:#fff}
+.bnote{margin:8px 0 0;font-size:12px;color:var(--olive-soft);text-align:center}
 .tels{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 18px}
 .tels a{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--olive-deep);font-size:17px;font-variant-numeric:tabular-nums}
 .tels a b{font-weight:600;letter-spacing:.02em}
@@ -269,6 +278,14 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <section class="sec"><h2 class="ttl">बारात की ताज़ा ख़बर</h2>
 <div id="updates"><p class="empty">अभी कोई सूचना नहीं — बारात के समय यहाँ देखते रहिए।</p></div>
 </section>
+<section class="sec bless"><h2 class="ttl">नवयुगल को आशीर्वाद</h2>
+<p class="bsub">अपना आशीर्वाद / शुभकामना लिखिए — सीधे परिवार के WhatsApp पर पहुँचेगा।</p>
+<div class="chips" id="bchips"><button type="button" class="chip">सदा सुखी रहो</button><button type="button" class="chip">जुग-जुग जियो</button><button type="button" class="chip">नया जीवन मंगलमय हो</button><button type="button" class="chip">बहुत-बहुत बधाई</button></div>
+<div class="f"><label for="bname">आपका नाम</label><input id="bname" placeholder="जैसे: रमेश जी, जोधपुर" autocomplete="name"></div>
+<div class="f"><label for="bmsg">आशीर्वाद / सन्देश</label><textarea id="bmsg" placeholder="आदित्य और खुशबू के लिए दो शब्द…"></textarea></div>
+<button type="button" class="btn" id="bsend">WhatsApp पर भेजें</button>
+<p class="bnote">भेजने से पहले WhatsApp में सन्देश दिखेगा — वहाँ से एक टैप में भेज दीजिए।</p>
+</section>
 <section class="sec"><h2 class="ttl">सम्पर्क</h2>
 <div class="rsvp">
 <img class="teb" src="assets/teb.png" alt="The Event Builders" width="900" height="424">
@@ -350,7 +367,22 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793633834"></script>
-<script src="live.js?v=1793633834"></script>
+<script src="config.js?v=1793641907"></script>
+<script src="live.js?v=1793641907"></script>
+<script>
+(function(){
+  var NUM=''; // family WhatsApp number: country code + 10 digits, e.g. '919876543210' (left blank for now)
+  var n=document.getElementById('bname'),m=document.getElementById('bmsg'),b=document.getElementById('bsend'),ch=document.getElementById('bchips'),note=document.querySelector('.bnote');
+  if(!b) return;
+  ch.addEventListener('click',function(e){ if(e.target.classList.contains('chip')){ m.value=(m.value?m.value+' ':'')+e.target.textContent+'।'; m.focus(); } });
+  b.addEventListener('click',function(){
+    var msg=(m.value||'').trim(); if(!msg){ m.focus(); m.placeholder='पहले दो शब्द लिखिए…'; return; }
+    if(!NUM){ if(note) note.textContent='WhatsApp नंबर जल्द जुड़ेगा — तब तक अपना सन्देश यहीं रखिए।'; return; }
+    var who=(n.value||'').trim();
+    var text='🙏 आदित्य संग खुशबू — आशीर्वाद\n\n'+msg+(who?'\n\n— '+who:'');
+    window.open('https://wa.me/'+NUM+'?text='+encodeURIComponent(text),'_blank');
+  });
+})();
+</script>
 </body>
 </html>
