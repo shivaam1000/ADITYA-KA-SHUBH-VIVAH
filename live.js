@@ -7,7 +7,19 @@
 
   var map=L.map('livemap',{zoomControl:false,attributionControl:false,scrollWheelZoom:false,maxZoom:16,minZoom:11});
   L.control.attribution({prefix:false,position:'bottomright'}).addTo(map); window.baraatMap=map;
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
+  // day / night mode: night from 21 Nov 2026 17:00 IST, or whenever the baraat is live; ?mode=night|day forces
+  var NIGHT_FROM=Date.UTC(2026,10,21,11,30,0), q=new URLSearchParams(location.search).get('mode');
+  var night = q==='night' ? true : q==='day' ? false : Date.now()>=NIGHT_FROM;
+  var ATTR='&copy; OpenStreetMap &copy; CARTO';
+  var dayTiles=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR,className:'daytiles'});
+  var dayLabels=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',className:'daylabels',pane:'shadowPane'});
+  var nightTiles=L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR});
+  var wrapEl=mapEl.parentNode;
+  function setMode(n){ night=n; document.body.classList.toggle('night',n); document.body.classList.toggle('day',!n);
+    if(n){ map.removeLayer(dayTiles); map.removeLayer(dayLabels); nightTiles.addTo(map); } else { map.removeLayer(nightTiles); dayTiles.addTo(map); dayLabels.addTo(map); }
+    if(window.__skySet) window.__skySet(n);
+    if(window.__routeStyle) window.__routeStyle(n); }
+  setMode(night);
   
   function pin(img,label,side,big){var w=big?62:54,h=Math.round(w*1.15);
     var L1='<img class="pinimg" src="assets/'+img+'" width="'+w+'" height="'+h+'" alt="">',L2='<div class="pinlbl">'+label+'</div>';var html,size,anc;
@@ -26,6 +38,8 @@
   var rp=map.createPane('routePane'); rp.style.zIndex=470; rp.style.pointerEvents='none';
   var routeShadow=L.polyline([HOME,DHABA,VENUE],{pane:'routePane',color:'#2a1d05',weight:7,opacity:.55,lineCap:'round'}).addTo(map);
   var route=L.polyline([HOME,DHABA,VENUE],{pane:'routePane',color:'#FFD873',weight:4,dashArray:'7 9',opacity:1,lineCap:'round'}).addTo(map);
+  window.__routeStyle=function(n){ route.setStyle({color:n?'#FFD873':'#B8892E'}); routeShadow.setStyle({opacity:n?.55:0}); if(window.__trail){ window.__trail.setStyle({color:n?'#FFF3C4':'#5B6B2F'}); } };
+  window.__routeStyle(night);
   var routeShown=true; function showRoute(){}
   // real road route (OSRM); falls back to the straight dotted line
   fetch('https://router.project-osrm.org/route/v1/driving/'+[HOME,DHABA,VENUE].map(function(p){return p[1]+','+p[0];}).join(';')+'?overview=full&geometries=geojson')
@@ -34,7 +48,7 @@
   map.fitBounds(bounds);
   var fitBtn=document.getElementById('fitall'); if(fitBtn){ fitBtn.onclick=function(){follow=false; clearTimeout(idleT); map.fitBounds(bounds); armIdle();}; }
   var baraat=L.marker(HOME,{icon:L.divIcon({className:'',html:'<div class="pinwrap live"><div class="pin">बारात</div></div>',iconSize:[60,60],iconAnchor:[30,22]}),zIndexOffset:1000});
-  var trail=L.polyline([],{pane:'routePane',color:'#FFF3C4',weight:5,opacity:.95,lineCap:'round'}).addTo(map);
+  var trail=L.polyline([],{pane:'routePane',color:night?'#FFF3C4':'#5B6B2F',weight:5,opacity:.95,lineCap:'round'}).addTo(map); window.__trail=trail;
   var acc=L.circle(HOME,{pane:'routePane',radius:0,color:'#F2E3B3',weight:1,fillOpacity:.12});
   var follow=true, idleT=null;
   function goBaraat(){ follow=true; if(last&&last.lat){ map.setView([last.lat,last.lng],Math.max(map.getZoom(),14)); } else { map.fitBounds(bounds); } }
@@ -53,6 +67,8 @@
     vid.src='assets/sky.mp4?v=2'; vid.poster='assets/sky.jpg'; vid.muted=true; vid.loop=true; vid.autoplay=!(reduce||saveData); vid.preload='auto';
     vid.setAttribute('muted',''); vid.setAttribute('playsinline',''); vid.setAttribute('webkit-playsinline',''); vid.setAttribute('aria-hidden','true');
     pane.appendChild(vid);
+    window.__skySet=function(n){ vid.style.display=n?'block':'none'; if(n){ var pp=vid.play(); if(pp&&pp.catch) pp.catch(function(){}); } else vid.pause(); };
+    window.__skySet(night);
     function fit(){var r=mapEl.getBoundingClientRect();vid.style.width=r.width+'px';vid.style.height=r.height+'px';L.DomUtil.setPosition(vid,map.containerPointToLayerPoint([0,0]));}
     map.on('move viewreset resize',fit); addEventListener('resize',fit); fit();
     map.on('zoomstart',function(){vid.style.visibility='hidden';}); map.on('zoomend',function(){fit();vid.style.visibility='visible';});
@@ -121,7 +137,7 @@
     fetch(DB+'/baraat/'+KEY+'/latest.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
       if(!d||!d.lat){ setCap('बारात प्रस्थान पर यहाँ चलती हुई दिखेगी',false); return; }
       var stale=Date.now()-d.t>3*60*1000, first=!last; last=d;
-      if(!d.off) showRoute();
+      if(!d.off){ showRoute(); if(!night && q!=='day') setMode(true); }
       if(navOn&&mePos&&!drawNav.pending){ drawNav.pending=true; setTimeout(function(){drawNav.pending=false; drawNav();},5000); }
       if(!map.hasLayer(baraat)){baraat.addTo(map); acc.addTo(map);}
       baraat.setLatLng([d.lat,d.lng]); acc.setLatLng([d.lat,d.lng]).setRadius(Math.min(d.acc||0,150));
