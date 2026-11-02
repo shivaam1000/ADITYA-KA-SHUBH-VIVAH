@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<title>Baraat Live · आदित्य & खुशबू</title>
-<meta name="description" content="आदित्य & खुशबू — बारात की live location और updates">
-<meta property="og:title" content="Baraat Live · आदित्य & खुशबू">
-<meta property="og:description" content="बारात की live location और हर update यहाँ">
+<title>सजीव वरयात्रा · आदित्य संग खुशबू</title>
+<meta name="description" content="आदित्य संग खुशबू — बारात की लाइव लोकेशन और ताज़ा ख़बर">
+<meta property="og:title" content="सजीव वरयात्रा · आदित्य संग खुशबू">
+<meta property="og:description" content="बारात की लाइव लोकेशन और हर ख़बर यहाँ">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F7F1E3'/%3E%3Ccircle cx='32' cy='32' r='14' fill='%235B6B2F'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Mukta:wght@400;500;600&family=Eczar:wght@600&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <style>
 :root{
@@ -198,18 +198,27 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 .music.on .eq i:nth-child(2){animation-delay:.2s}.music.on .eq i:nth-child(3){animation-delay:.4s}
 @keyframes eq{to{height:12px}}
 @media(prefers-reduced-motion:reduce){.music.on .eq i{animation:none;height:8px}}
+.tb-live.hi,.live.hi{letter-spacing:.02em;text-transform:none;font-size:14px}
+.dohabox{width:min(100%,420px);margin:14px auto 0;container-type:inline-size}
+.dohabox .crop{width:100%;aspect-ratio:1400/170;overflow:hidden}
+.dohabox .crop img{display:block;width:100%;height:auto}
+.dline{font-family:'Eczar',serif;font-weight:600;color:#4E5B2E;text-align:center;margin:0;font-size:20px;font-size:5.4cqw;line-height:1.3;white-space:nowrap}
+.gdoha{font-family:'Eczar',serif;font-weight:600;color:#B8892E;text-align:center;line-height:1.55;margin:6px auto 4px;width:min(100%,440px);container-type:inline-size}
+.gdoha span{display:block;font-size:18px;font-size:4.75cqw;white-space:nowrap}
+.gdoha.chaupai{margin-top:12px}.gdoha.chaupai span{font-size:19px;font-size:5.2cqw}
+.mapline{margin:12px 0 0;font-family:var(--display);font-size:17px;line-height:1.6;color:var(--olive);text-align:center;text-wrap:balance}
 </style>
 </head>
 <body>
-<div class="topbar" id="topbar"><span class="tb-live"><i></i>Baraat Live</span></div>
+<div class="topbar" id="topbar"><span class="tb-live hi"><i></i>सजीव वरयात्रा</span></div>
 <div class="wrap" id="app">
 <header class="top hero"><i class="orn tl"></i><i class="orn tr"></i><p class="ganesh">॥ श्री गणेशाय नमः ॥</p>
-<img class="logo" src="assets/logo.png" alt="" width="720" height="720"><h1 class="sr">आदित्य &amp; खुशबू</h1>
+<img class="logo" src="assets/logo.png" alt="" width="720" height="720"><h1 class="sr">आदित्य संग खुशबू</h1>
 <p class="event hl" style="margin-top:2px">शुभ विवाह · शनिवार, 21 नवम्बर 2026 · जोधपुर</p>
-<div class="music" id="music"><button type="button" id="play"><img class="ico" src="assets/dhol.png" alt="" width="160" height="139"><span class="eq"><i></i><i></i><i></i></span><span id="playTxt">माहौल बनाओ</span></button><button type="button" class="yt" id="ytBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12" fill="none" stroke="#5B6B2F" stroke-width="1.8" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="#B8892E"/><circle cx="16.5" cy="16" r="2.5" fill="#B8892E"/></svg><span>गाना</span></button></div>
+<div class="music" id="music"><button type="button" id="play"><img class="ico" src="assets/dhol.png" alt="" width="160" height="139"><span class="eq"><i></i><i></i><i></i></span><span id="playTxt">माहौल बनाइए</span></button><button type="button" class="yt" id="ytBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12" fill="none" stroke="#5B6B2F" stroke-width="1.8" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="#B8892E"/><circle cx="16.5" cy="16" r="2.5" fill="#B8892E"/></svg><span>संगीत सुनिए</span></button></div>
 <div class="ytbox" id="ytbox" hidden></div>
 <audio id="aud" src="assets/shehnai.mp3?v=1793614150" loop preload="none"></audio>
-<img class="doha-img" src="assets/doha.png" alt="आदित्य की किरणें मिलीं, महकी खुशबू संग । शुभ तिथि पर आइए, भरने इनके जीवन में रंग ॥" width="1400" height="288"></header>
+<div class="dohabox"><div class="crop"><img src="assets/doha.png" alt="आदित्य की किरणें मिलीं, महकी खुशबू संग ।" width="1400" height="288"></div><p class="dline">शुभ बेला में आइए, भरने जीवन-रंग ॥</p></div></header>
 <section class="cd sec" id="cd" hidden>
 <p class="cap big">बारात प्रस्थान में शेष</p>
 <div class="row">
@@ -232,27 +241,29 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
   tick();var t=setInterval(tick,1000);
 })();
 </script>
-<section class="status sec"><span class="live"><i></i>Baraat Live</span>
-<div class="where wait" id="where"><img src="assets/doha-wait.png" alt="इंतज़ार की घड़ियाँ गिन रही हैं ढोल की थाप, शनिवार 21 नवम्बर, शाम 5:30 — बरात चलेगी आपके साथ।" width="1400" height="174"></div>
+<section class="status sec"><span class="live hi"><i></i>वरयात्रा पथदर्शन – बारात कहाँ पहुँची, देखिए</span>
+<div class="where wait" id="where"><div class="gdoha"><span>इंतज़ार की घड़ियाँ गिन रही हैं ढोल की थाप,</span><span>शनिवार 21 नवम्बर, शाम 5:30 — बारात चलेगी आपके साथ।</span></div></div>
 <p class="note" id="note" hidden></p>
 <div class="doha2" id="doha2" hidden><img src="assets/doha-baraat.png" alt="गाजे-बाजे संग में, निकली आज बरात। दूल्हे राजा ला रहे, खुशियों की सौगात॥" width="1400" height="361"></div>
-<div class="mapwrap"><div id="livemap" class="livemap"></div><button type="button" class="recenter" id="recenter" title="बारात पर लौटें">◎ <span>बारात कहाँ है?</span></button><button type="button" class="fitall" id="fitall">पूरा मार्ग</button><button type="button" class="modebtn" id="modebtn" title="दिन / रात">🌙</button><button type="button" class="mapclose" id="mapclose" hidden>✕ बंद करें</button><div class="maphint" id="maphint">बड़ा देखने के लिए map पर tap करें</div></div>
-<p class="mapcap" id="mapcap">बारात प्रस्थान पर यहाँ चलती हुई दिखेगी</p>
+<div class="mapwrap"><div id="livemap" class="livemap"></div><button type="button" class="recenter" id="recenter" title="बारात पर लौटें">◎ <span>बारात कहाँ है?</span></button><button type="button" class="fitall" id="fitall">पूरा मार्ग</button><button type="button" class="modebtn" id="modebtn" title="दिन / रात">🌙</button><button type="button" class="mapclose" id="mapclose" hidden>✕ बंद करें</button><div class="maphint" id="maphint">बड़ा देखने के लिए नक्शे पर टैप करें</div></div>
+<p class="mapline">ढोल की थाप, रोशनी की चमक, पटाखों की गूँज, नाचते बाराती और बीच में दूल्हे राजा — नक्शे पर जहाँ यह रौनक दिखे, वहीं है हमारी बारात।</p>
+<div class="gdoha chaupai"><span>बिष्नु बिरंचि आदि सुरब्राता।</span><span>चढ़ि चढ़ि बाहन चले बराता॥</span></div>
+<p class="mapcap" id="mapcap"></p>
 <p class="mapdist" id="mapdist"></p>
-<div class="navrow"><button type="button" class="btn navbtn" id="navbtn">🧭 बारात तक पहुँचें</button><p class="navinfo" id="navinfo" hidden></p><a class="navlink" id="navlink" href="https://www.google.com/maps/dir/?api=1&destination=26.281493753195598,72.98599529580494&travelmode=driving" target="_blank" rel="noopener">Google Maps में नेविगेट करें →</a></div>
+<div class="navrow"><button type="button" class="btn navbtn" id="navbtn">🧭 बारात तक पहुँचें</button><p class="navinfo" id="navinfo" hidden></p><a class="navlink" id="navlink" href="https://www.google.com/maps/dir/?api=1&destination=26.281493753195598,72.98599529580494&travelmode=driving" target="_blank" rel="noopener">Google Maps में रास्ता देखें →</a></div>
 <p class="stamp" id="stamp" hidden></p>
-<a class="btn off" id="map" href="#" rel="noopener" hidden>📍 Live location जल्द ही</a>
+<a class="btn off" id="map" href="#" rel="noopener" hidden>📍 लाइव लोकेशन बारात प्रस्थान पर शुरू होगी</a>
 </section>
 <section class="sec"><h2>बारात का मार्ग</h2>
 <ol class="route">
 <li><span class="rt">शाम 5:30</span><b>निवास से प्रस्थान</b><small>C-11, प्रथम विस्तार, कमला नेहरू नगर</small><a href="https://www.google.com/maps/search/?api=1&query=26.281493753195598,72.98599529580494" target="_blank" rel="noopener">Maps में देखें →</a></li>
-<li><span class="rt">पुनः एकत्र</span><b>जय भवानी ढाबा (DPS ढाबा)</b><small>पाल रोड, DPS स्कूल के पास</small><a href="https://www.google.com/maps/search/?api=1&query=26.221253721138172,72.97233283694219" target="_blank" rel="noopener">Maps में देखें →</a></li>
+<li><span class="rt">पुनः एकत्रण</span><b>जय भवानी ढाबा (DPS ढाबा)</b><small>पाल रोड, DPS स्कूल के पास</small><a href="https://www.google.com/maps/search/?api=1&query=26.221253721138172,72.97233283694219" target="_blank" rel="noopener">Maps में देखें →</a></li>
 <li><span class="rt">विवाह स्थल</span><b>होटल कस्तूरी ऑर्किड</b><small>पाल–चौपासनी बाईपास रोड, DPS स्कूल के पास</small><a href="https://www.google.com/maps/search/?api=1&query=Hotel+Kasturi+Orchid+Jodhpur&query_place_id=ChIJCZMrGjiJQTkRTpjJPzwzF0k" target="_blank" rel="noopener">Maps में देखें →</a></li>
 </ol></section>
-<section class="sec"><h2>Updates</h2>
-<div id="updates"><p class="empty">अभी कोई update नहीं — बारात के समय यहाँ देखते रहें।</p></div>
+<section class="sec"><h2>बारात की ताज़ा ख़बर</h2>
+<div id="updates"><p class="empty">अभी कोई सूचना नहीं — बारात के समय यहाँ देखते रहिए।</p></div>
 </section>
-<section class="sec"><h2>RSVP · सम्पर्क</h2>
+<section class="sec"><h2>सम्पर्क</h2>
 <div class="rsvp">
 <img class="teb" src="assets/teb.png" alt="The Event Builders" width="900" height="424">
 <div class="tels">
@@ -260,9 +271,9 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <a href="tel:+919950544775"><span>📞</span><b>99505 44775</b></a>
 </div>
 </div>
-<button type="button" class="btn ghost" id="share">📤 यह page WhatsApp पर भेजें</button>
+<button type="button" class="btn ghost" id="share">📤 यह पेज WhatsApp पर भेजें</button>
 </section>
-<footer class="footer"><p class="foot">स्वागताकांक्षी<span class="fam">बिड़ला परिवार</span><small>यह page अपने आप update होता रहता है</small></p></footer>
+<footer class="footer"><p class="foot">स्वागताकांक्षी<span class="fam">बिड़ला परिवार</span><small>यह पेज अपने-आप अपडेट होता रहता है</small></p></footer>
 </div>
 <script>
 (function(){
@@ -288,16 +299,16 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
     var where=get(0).trim(), note=get(1).trim(), map=safeUrl(get(2)), stamp=get(3).trim();
     if(where)document.getElementById("where").textContent=where;
     var n=document.getElementById("note"); n.textContent=note; n.hidden=!note;
-    var s=document.getElementById("stamp"); s.textContent=stamp?"आख़िरी update · "+stamp:""; s.hidden=!stamp;
+    var s=document.getElementById("stamp"); s.textContent=stamp?"आख़िरी अपडेट · "+stamp:""; s.hidden=!stamp;
     var m=document.getElementById("map");
     if(map){m.href=map;m.target="_blank";m.className="btn";m.textContent="📍 Google Maps पर live location देखें";}
-    else{m.removeAttribute("href");m.className="btn off";m.textContent="📍 Live location जल्द ही";}
+    else{m.removeAttribute("href");m.className="btn off";m.textContent="📍 लाइव लोकेशन बारात प्रस्थान पर शुरू होगी";}
     var ups=[];
     for(var i=6;i<rows.length;i++){var t=(rows[i][0]||"").trim(),msg=(rows[i][1]||"").trim(); if(msg)ups.push({t:t,m:msg});}
     ups.reverse(); // newest first (sheet is filled top to bottom)
     document.getElementById("updates").innerHTML = ups.length
       ? '<ul class="tl">'+ups.map(function(u){return '<li><time>'+esc(u.t)+'</time><p>'+esc(u.m)+'</p></li>';}).join("")+'</ul>'
-      : '<p class="empty">अभी कोई update नहीं — बारात के समय यहाँ देखते रहें।</p>';
+      : '<p class="empty">अभी कोई सूचना नहीं — बारात के समय यहाँ देखते रहिए।</p>';
   }
   function load(){
     fetch(URL+Date.now(),{cache:"no-store"}).then(function(r){return r.text();}).then(function(t){apply(parseCSV(t));}).catch(function(){});
@@ -308,18 +319,18 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 </script>
 <script>
 (function(){var a=document.getElementById('aud'),w=document.getElementById('music'),b=document.getElementById('play'),t=document.getElementById('playTxt');
-b.addEventListener('click',function(){ if(a.paused){a.play().then(function(){w.classList.add('on');t.textContent='रोकें';}).catch(function(){t.textContent='फिर दबाएँ';}); } else {a.pause();w.classList.remove('on');t.textContent='माहौल बनाओ';} });
+b.addEventListener('click',function(){ if(a.paused){a.play().then(function(){w.classList.add('on');t.textContent='रोकें';}).catch(function(){t.textContent='फिर दबाएँ';}); } else {a.pause();w.classList.remove('on');t.textContent='माहौल बनाइए';} });
 document.getElementById('ytBtn').addEventListener('click',function(){var box=document.getElementById('ytbox');
- if(box.hidden){ if(!a.paused){a.pause();w.classList.remove('on');t.textContent='माहौल बनाओ';}
+ if(box.hidden){ if(!a.paused){a.pause();w.classList.remove('on');t.textContent='माहौल बनाइए';}
   box.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/JtKjcyc5wh0?autoplay=1&playsinline=1&rel=0" title="बारात का गाना" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>'; box.hidden=false; this.querySelector('span').textContent='✕ बंद'; box.scrollIntoView({behavior:'smooth',block:'center'}); }
- else { box.innerHTML=''; box.hidden=true; this.querySelector('span').textContent='गाना'; } });
-a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='माहौल बनाओ';});})();
+ else { box.innerHTML=''; box.hidden=true; this.querySelector('span').textContent='संगीत सुनिए'; } });
+a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='माहौल बनाइए';});})();
 </script>
 <script>
 (function(){
-  var url=location.origin+location.pathname, msg='आदित्य & खुशबू — बारात Live: location और updates यहाँ देखें\n'+url;
+  var url=location.origin+location.pathname, msg='आदित्य संग खुशबू — सजीव वरयात्रा: बारात की लाइव लोकेशन और ताज़ा ख़बर यहाँ देखें\n'+url;
   document.getElementById('share').addEventListener('click',function(){
-    if(navigator.share){navigator.share({title:'Baraat Live',text:msg}).catch(function(){});}
+    if(navigator.share){navigator.share({title:'सजीव वरयात्रा',text:msg}).catch(function(){});}
     else{window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');}
   });
   // auto-refresh every 60 s so guests see new updates without doing anything (skips while music/video plays)
