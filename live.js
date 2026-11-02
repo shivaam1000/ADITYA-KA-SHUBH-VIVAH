@@ -15,7 +15,7 @@
   var MT=CFG.maptiler||'', STYLE=new URLSearchParams(location.search).get('style')||'';
   var MT_ATTR='&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> &copy; OpenStreetMap';
   function mt(style,cls){ return L.tileLayer('https://api.maptiler.com/maps/'+style+'/{z}/{x}/{y}'+(devicePixelRatio>1?'@2x':'')+'.png?key='+MT,{maxZoom:19,tileSize:512,zoomOffset:-1,attribution:MT_ATTR,className:cls||''}); }
-  var DAY_STYLE = STYLE || 'pastel', NIGHT_STYLE = (STYLE==='hybrid'||STYLE==='satellite') ? STYLE : 'dataviz-dark';
+  var DAY_STYLE = STYLE || 'pastel', NIGHT_STYLE = STYLE ? ((STYLE==='hybrid'||STYLE==='satellite'||STYLE==='dataviz-dark') ? STYLE : 'dataviz-dark') : 'hybrid';
   var useMT = !!MT;
   var dayTiles = useMT ? mt(DAY_STYLE,'daytiles'+(STYLE?' raw':'')) : L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR,className:'daytiles'});
   var dayLabels = useMT ? L.layerGroup() : L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',className:'daylabels',pane:'shadowPane'});
