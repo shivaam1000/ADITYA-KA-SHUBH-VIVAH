@@ -90,7 +90,8 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .ppop .leaflet-popup-content{margin:10px 14px}
 .ppop .leaflet-popup-close-button{color:var(--olive)}
 .livemap{background:#0b1118}
-.night .livemap .leaflet-tile-pane{filter:brightness(1.7) contrast(1.1)}
+.night .livemap .leaflet-tile-pane{filter:brightness(.55) saturate(.6) contrast(1.15)}
+.night .sky{opacity:.9}
 .day .mapwrap,.day .livemap{background:#F3EEDF}
 .day .daytiles{filter:sepia(.45) saturate(.7) brightness(1.03) contrast(.97)}
 .day .daytiles.raw{filter:none}
@@ -323,7 +324,7 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='ðŸ
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793594090"></script>
-<script src="live.js?v=1793594090"></script>
+<script src="config.js?v=1793594276"></script>
+<script src="live.js?v=1793594276"></script>
 </body>
 </html>
