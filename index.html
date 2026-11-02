@@ -92,7 +92,8 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .livemap{background:#0b1118}
 .night .livemap .leaflet-tile-pane{filter:brightness(1.7) contrast(1.1)}
 .day .mapwrap,.day .livemap{background:#F3EEDF}
-.day .daytiles{filter:sepia(.55) saturate(.55) brightness(1.04) contrast(.95)}
+.day .daytiles{filter:sepia(.45) saturate(.7) brightness(1.03) contrast(.97)}
+.day .daytiles.raw{filter:none}
 .day .daylabels{filter:sepia(.6) saturate(.7) brightness(.85);opacity:.9}
 .day .livemap .leaflet-control-attribution{background:rgba(251,248,239,.8)!important;color:var(--olive-soft)!important}
 .day .maphint{color:var(--olive-deep);background:rgba(251,248,239,.85)}
@@ -318,7 +319,7 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='ðŸ
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=1793593012"></script>
-<script src="live.js?v=1793593012"></script>
+<script src="config.js?v=1793593622"></script>
+<script src="live.js?v=1793593622"></script>
 </body>
 </html>

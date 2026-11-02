@@ -11,9 +11,15 @@
   var NIGHT_FROM=Date.UTC(2026,10,21,11,30,0), q=new URLSearchParams(location.search).get('mode');
   var night = q==='night' ? true : q==='day' ? false : Date.now()>=NIGHT_FROM;
   var ATTR='&copy; OpenStreetMap &copy; CARTO';
-  var dayTiles=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR,className:'daytiles'});
-  var dayLabels=L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',className:'daylabels',pane:'shadowPane'});
-  var nightTiles=L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR});
+  // tile source: MapTiler (key in config.js) with ?style= override; falls back to CARTO
+  var MT=CFG.maptiler||'', STYLE=new URLSearchParams(location.search).get('style')||'';
+  var MT_ATTR='&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> &copy; OpenStreetMap';
+  function mt(style,cls){ return L.tileLayer('https://api.maptiler.com/maps/'+style+'/{z}/{x}/{y}'+(devicePixelRatio>1?'@2x':'')+'.png?key='+MT,{maxZoom:19,tileSize:512,zoomOffset:-1,attribution:MT_ATTR,className:cls||''}); }
+  var DAY_STYLE = STYLE || 'pastel', NIGHT_STYLE = (STYLE==='hybrid'||STYLE==='satellite') ? STYLE : 'dataviz-dark';
+  var useMT = !!MT;
+  var dayTiles = useMT ? mt(DAY_STYLE,'daytiles'+(STYLE?' raw':'')) : L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR,className:'daytiles'});
+  var dayLabels = useMT ? L.layerGroup() : L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',className:'daylabels',pane:'shadowPane'});
+  var nightTiles = useMT ? mt(NIGHT_STYLE,'nighttiles') : L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd',attribution:ATTR});
   var wrapEl=mapEl.parentNode;
   function setMode(n){ night=n; document.body.classList.toggle('night',n); document.body.classList.toggle('day',!n);
     if(n){ map.removeLayer(dayTiles); map.removeLayer(dayLabels); nightTiles.addTo(map); } else { map.removeLayer(nightTiles); dayTiles.addTo(map); dayLabels.addTo(map); }
