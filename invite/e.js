@@ -1,7 +1,6 @@
 (function(){
   var EV = window.EV || [];
   var envScreen = document.getElementById('envScreen'), env = document.getElementById('env'), page = document.getElementById('page');
-  var aud = document.getElementById('aud'), mus = document.getElementById('mus');
   document.body.classList.add('locked'); page.setAttribute('aria-hidden', 'true');
   function pad(n){ return (n < 10 ? '0' : '') + n; }
   function tick(){
@@ -17,12 +16,6 @@
     document.getElementById('cdWhen').textContent = nx.when;
   }
   tick(); setInterval(tick, 1000);
-  function setMus(on){ if (on) mus.classList.add('on'); else mus.classList.remove('on'); }
-  function playAud(){                       // play() returns a promise only on newer browsers
-    try { var pr = aud.play(); if (pr && pr.then) pr.then(function(){ setMus(true); }, function(){ setMus(false); }); else setMus(!aud.paused); }
-    catch (e) { setMus(false); }
-  }
-  mus.onclick = function(){ if (aud.paused) playAud(); else { aud.pause(); setMus(false); } };
   function reveal(){
     var els = document.querySelectorAll('.rv');
     if (!('IntersectionObserver' in window)) { for (var i = 0; i < els.length; i++) els[i].classList.add('in'); return; }
@@ -43,11 +36,10 @@
     if (ev && ev.preventDefault) ev.preventDefault();
     if (opened) return; opened = true;
     env.classList.add('open'); envScreen.classList.add('opening');
-    playAud();
     setTimeout(function(){ env.classList.add('open2'); }, 650);
     setTimeout(function(){
       envScreen.classList.add('gone'); document.body.classList.remove('locked'); page.removeAttribute('aria-hidden');
-      mus.hidden = false; window.scrollTo(0, 0); petals();
+      window.scrollTo(0, 0); petals();
     }, 2100);
   }
   document.getElementById('openBtn').addEventListener('click', openInvite);
