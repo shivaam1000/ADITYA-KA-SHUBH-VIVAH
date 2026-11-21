@@ -104,6 +104,10 @@ body{color:var(--olive-deep);font-family:var(--body);font-size:16px;line-height:
 .ppop .leaflet-popup-close-button{color:var(--olive)}
 .livemap{background:#0b1118}
 .night .livemap .leaflet-tile-pane{filter:brightness(.55) saturate(.6) contrast(1.15)}
+/* 21 Nov: baraat live ho to naksha saaf dikhe - aatishbaazi halki, sadkein roshan */
+.night.blive .livemap .leaflet-tile-pane{filter:brightness(.82) saturate(.75) contrast(1.08)}
+.night.blive .sky{opacity:.45}
+.night.blive .leaflet-sky-pane{mix-blend-mode:screen}
 .night .sky{opacity:.9}
 .day .mapwrap,.day .livemap{background:#F3EEDF}
 .day .daytiles{filter:sepia(.45) saturate(.7) brightness(1.03) contrast(.97)}
@@ -245,7 +249,7 @@ h2{font-family:var(--display);font-weight:400;font-size:20px;color:var(--olive);
 <p class="event hl" style="margin-top:2px">शुभ विवाह · शनिवार, 21 नवम्बर 2026 · जोधपुर</p>
 <div class="music" id="music"><button type="button" id="play"><img class="ico" src="assets/dhol.png" alt="" width="160" height="139"><span class="eq"><i></i><i></i><i></i></span><span id="playTxt">माहौल बनाइए</span></button><button type="button" class="yt" id="ytBtn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V6l10-2v12" fill="none" stroke="#4E5B2E" stroke-width="1.8" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5" fill="#B8892E"/><circle cx="16.5" cy="16" r="2.5" fill="#B8892E"/></svg><span>संगीत सुनिए</span></button></div>
 <div class="ytbox" id="ytbox" hidden></div>
-<audio id="aud" src="assets/shehnai.mp3?v=21nov835" loop preload="none"></audio>
+<audio id="aud" src="assets/shehnai.mp3?v=21nov845" loop preload="none"></audio>
 <div class="dohabox"><div class="crop"><img src="assets/doha.png" alt="आदित्य की किरणें मिलीं, महकी खुशबू संग ।" width="1400" height="288"></div><p class="dline">शुभ बेला में आइए, भरने जीवन-रंग ॥</p></div></header>
 <section class="cd sec" id="cd" hidden>
 <p class="cap big">बारात प्रस्थान में शेष</p>
@@ -385,8 +389,8 @@ a.addEventListener('ended',function(){w.classList.remove('on');t.textContent='�
 })();
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="config.js?v=21nov835"></script>
-<script src="live.js?v=21nov835"></script>
+<script src="config.js?v=21nov845"></script>
+<script src="live.js?v=21nov845"></script>
 <script>
 (function(){
   var NUM='919929826404'; // family WhatsApp number: country code + 10 digits, e.g. '919876543210' (left blank for now)
