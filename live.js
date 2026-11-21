@@ -181,4 +181,12 @@
   }
   poll(); pollTrail(); setInterval(poll,10000); setInterval(pollTrail,60000);
   document.addEventListener('visibilitychange',function(){ if(!document.hidden){poll();pollTrail();} });
+  /* 21 Nov: dekhne walon ki ginti - har phone ki ek gumnaam haaziri (koi naam/number nahi). Fail ho to map par koi asar nahi. */
+  (function(){ try{
+    var id=null; try{ id=localStorage.getItem('bv_id'); if(!id){ id='v'+Math.random().toString(36).slice(2,10)+Date.now().toString(36); localStorage.setItem('bv_id',id); } }catch(e){}
+    if(!id) id='v'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+    var beat=function(){ if(document.hidden) return; try{ fetch(DB+'/baraat/'+KEY+'/viewers/'+id+'.json',{method:'PUT',body:'{"t":{".sv":"timestamp"}}'}).catch(function(){}); }catch(e){} };
+    beat(); setInterval(beat,45000);
+    document.addEventListener('visibilitychange',function(){ if(!document.hidden) beat(); });
+  }catch(e){} })();
 })();
