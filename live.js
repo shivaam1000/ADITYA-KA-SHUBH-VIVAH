@@ -188,7 +188,7 @@
       var toVenue=km([d.lat,d.lng],VENUE);
       if(dist) dist.textContent = toVenue<0.12 ? 'बारात विवाह स्थल पर पहुँच गई है' : 'विवाह स्थल से '+(toVenue<1? Math.round(toVenue*1000)+' मीटर' : toVenue.toFixed(1)+' km')+' दूर';
       setCap(d.off ? (km([d.lat,d.lng],HOME)<0.3 ? 'लाइव लोकेशन बारात प्रस्थान पर शुरू होगी' : (toVenue<0.3 ? '' : 'ट्रैकिंग रुकी हुई है · आख़िरी स्थिति '+ago(d.t))) : (stale ? 'सिग्नल नहीं मिल रहा · आख़िरी स्थिति '+ago(d.t) : 'बारात लाइव · '+ago(d.t)), !d.off && !stale);
-      try{ document.body.classList.toggle('blive', !d.off); if(d.off) showPlace(''); else updatePlace(d); }catch(e){}
+      try{ document.body.classList.toggle('blive', !d.off); }catch(e){}   /* jagah ka naam band: is ilaake ka data kachcha nikla (NH25, makaan number) */
       if(follow){ if(first) map.setView([d.lat,d.lng],16); else map.panTo([d.lat,d.lng],{animate:true}); }
     }).catch(function(){});
   }
