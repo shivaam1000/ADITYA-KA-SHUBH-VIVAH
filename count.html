@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="hi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>बारात Live · गिनती</title>
+<style>
+body{margin:0;background:#FBF8EF;color:#4E5B2E;font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif;text-align:center}
+.wrap{max-width:460px;margin:0 auto;padding:26px 18px 40px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:#8a7a4a;font-size:14px;margin:0 0 20px}
+.card{background:#fff;border:1.5px solid #B8892E;border-radius:16px;padding:20px 14px;margin-bottom:14px}
+.big{font-size:74px;font-weight:700;line-height:1;color:#5E1A1D}
+.lbl{font-size:17px;margin-top:8px}
+.row{display:flex;justify-content:space-between;align-items:center;font-size:17px;padding:10px 4px;border-top:1px solid #eadfc3}
+.row:first-child{border-top:0}
+.row b{font-size:20px}
+.ok{color:#2E7D32}.bad{color:#B3261E}.wait{color:#8a7a4a}
+.foot{font-size:13px;color:#8a7a4a;margin-top:14px;line-height:1.6}
+</style></head>
+<body><div class="wrap">
+<h1>बारात Live · गिनती</h1>
+<p class="sub">यह page सिर्फ़ आपके लिए है — मेहमानों को नहीं दिखता</p>
+<div class="card"><div class="big" id="now">—</div><div class="lbl">लोग अभी देख रहे हैं</div></div>
+<div class="card">
+<div class="row"><span>अब तक कुल फ़ोन</span><b id="tot">—</b></div>
+<div class="row"><span>पिछले 10 मिनट में</span><b id="ten">—</b></div>
+</div>
+<div class="card">
+<div class="row"><span>ट्रैकर</span><b id="trk" class="wait">—</b></div>
+<div class="row"><span>विवाह स्थल से दूरी</span><b id="dst">—</b></div>
+</div>
+<p class="foot" id="foot">जाँच रहे हैं…</p>
+</div>
+<script src="config.js"></script>
+<script>
+(function(){
+  var CFG=window.BARAAT_CFG||{}, DB=CFG.db||"", KEY=CFG.key||"";
+  var $=function(i){return document.getElementById(i);};
+  if(!DB||!KEY){ $('foot').textContent='Setup अधूरा है।'; return; }
+  var VENUE=[26.2224344,72.968648], off=0, base=DB+'/baraat/'+KEY+'/';
+  function km(a,b){var R=6371,dLat=(b[0]-a[0])*Math.PI/180,dLng=(b[1]-a[1])*Math.PI/180,s=Math.pow(Math.sin(dLat/2),2)+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.pow(Math.sin(dLng/2),2);return 2*R*Math.asin(Math.sqrt(s));}
+  function ago(s){ if(s<15) return 'अभी'; if(s<60) return s+' सेकंड पहले'; var m=Math.round(s/60); return m<60? m+' मिनट पहले' : Math.round(m/60)+' घंटे पहले'; }
+  /* server ki ghadi, taaki galat ghadi wale phone par bhi ginti sahi aaye */
+  fetch(base+'clock.json',{method:'PUT',body:'{".sv":"timestamp"}'}).then(function(r){return r.json();}).then(function(t){ if(typeof t==='number') off=t-Date.now(); }).catch(function(){});
+  function load(){
+    var now=Date.now()+off;
+    fetch(base+'viewers.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(v){
+      var live=0, ten=0, tot=0, k;
+      if(v){ for(k in v){ if(!v.hasOwnProperty(k)) continue; tot++; var t=v[k]&&v[k].t; if(typeof t!=='number') continue; var age=(now-t)/1000; if(age<100) live++; if(age<600) ten++; } }
+      $('now').textContent=live; $('tot').textContent=tot; $('ten').textContent=ten;
+      $('foot').textContent='आख़िरी जाँच · '+new Date().toLocaleTimeString('hi-IN',{hour:'numeric',minute:'2-digit',second:'2-digit'})+' · हर 20 सेकंड में अपने-आप';
+    }).catch(function(){ $('foot').textContent='गिनती नहीं मिल पाई — internet देखें।'; });
+    fetch(base+'latest.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
+      var e=$('trk');
+      if(!d||!d.lat){ e.textContent='शुरू नहीं हुआ'; e.className='wait'; $('dst').textContent='—'; return; }
+      var s=Math.max(0,Math.round((Date.now()+off-d.t)/1000));
+      if(d.off){ e.textContent='रुका हुआ · '+ago(s); e.className='wait'; }
+      else if(s>180){ e.textContent='बंद पड़ा है · '+ago(s); e.className='bad'; }
+      else { e.textContent='लाइव · '+ago(s); e.className='ok'; }
+      var x=km([d.lat,d.lng],VENUE); $('dst').textContent = x<0.12 ? 'पहुँच गई' : (x<1? Math.round(x*1000)+' मीटर' : x.toFixed(1)+' km');
+    }).catch(function(){});
+  }
+  load(); setInterval(load,20000);
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) load(); });
+})();
+</script>
+</body></html>
