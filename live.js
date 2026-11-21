@@ -163,13 +163,13 @@
       if(!d.off){ showRoute(); if(!night && q!=='day') setMode(true); }
       // live: the baraat doha replaces the waiting status; stopped: show status again
       var dh=document.getElementById('doha2'), wh=document.getElementById('where'), nt=document.getElementById('note');
-      if(dh&&wh){ if(!d.off){ dh.hidden=false; wh.hidden=true; if(nt) nt.hidden=true; } else { dh.hidden=true; wh.hidden=false; if(km([d.lat,d.lng],VENUE)<0.3){ wh.classList.remove('wait'); wh.textContent='बारात विवाह स्थल पर पहुँच गई है'; } else { wh.innerHTML=whHTML; wh.className=whCls; } } }
+      if(dh&&wh){ if(!d.off){ dh.hidden=false; wh.hidden=true; if(nt) nt.hidden=true; } else { dh.hidden=true; wh.hidden=false; if(km([d.lat,d.lng],VENUE)<0.3){ wh.classList.remove('wait'); wh.textContent='बारात विवाह स्थल पर पहुँच गई है'; } else if(km([d.lat,d.lng],HOME)<0.3){ wh.innerHTML=whHTML; wh.className=whCls; } else { wh.classList.remove('wait'); wh.textContent='बारात रास्ते में है'; } } }
       if(navOn&&mePos&&!drawNav.pending){ drawNav.pending=true; setTimeout(function(){drawNav.pending=false; drawNav();},5000); }
       if(!map.hasLayer(baraat)){baraat.addTo(map); acc.addTo(map);}
       baraat.setLatLng([d.lat,d.lng]); acc.setLatLng([d.lat,d.lng]).setRadius(Math.min(d.acc||0,150));
       var toVenue=km([d.lat,d.lng],VENUE);
       if(dist) dist.textContent = toVenue<0.12 ? 'बारात विवाह स्थल पर पहुँच गई है' : 'विवाह स्थल से '+(toVenue<1? Math.round(toVenue*1000)+' मीटर' : toVenue.toFixed(1)+' km')+' दूर';
-      setCap(d.off ? (km([d.lat,d.lng],HOME)<0.3 ? 'लाइव लोकेशन बारात प्रस्थान पर शुरू होगी' : 'ट्रैकिंग रुकी हुई है · आख़िरी स्थिति '+ago(d.t)) : (stale ? 'सिग्नल नहीं मिल रहा · आख़िरी स्थिति '+ago(d.t) : 'बारात लाइव · '+ago(d.t)), !d.off && !stale);
+      setCap(d.off ? (km([d.lat,d.lng],HOME)<0.3 ? 'लाइव लोकेशन बारात प्रस्थान पर शुरू होगी' : (toVenue<0.3 ? '' : 'ट्रैकिंग रुकी हुई है · आख़िरी स्थिति '+ago(d.t))) : (stale ? 'सिग्नल नहीं मिल रहा · आख़िरी स्थिति '+ago(d.t) : 'बारात लाइव · '+ago(d.t)), !d.off && !stale);
       if(follow){ if(first) map.setView([d.lat,d.lng],14); else map.panTo([d.lat,d.lng],{animate:true}); }
     }).catch(function(){});
   }
