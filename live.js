@@ -139,7 +139,13 @@
     },function(e){ if(navInfo){navInfo.hidden=false;navInfo.textContent=e.code===1?'Location की अनुमति नहीं मिली — browser में Allow करें।':'आपकी location नहीं मिल रही।';} },{enableHighAccuracy:true,maximumAge:10000,timeout:20000});
     navTimer=setInterval(drawNav,30000);
   }
-  if(navBtn) navBtn.addEventListener('click',function(){ navOn?stopNav():startNav(); });
+  if(navBtn) navBtn.addEventListener('click',function(){
+    /* 21 Nov: seedha Google Maps - baraat ki sabse taazi jagah tak */
+    var t=target(), have=!!(last&&last.lat), old=have&&!last.off&&(Date.now()-last.t>3*60*1000);
+    if(navInfo){ navInfo.hidden=false; navInfo.textContent = !have ? 'बारात की लाइव स्थिति अभी शुरू नहीं हुई — Google Maps निवास तक ले जाएगा' : (old ? 'बारात की ताज़ा स्थिति नहीं मिल रही — आख़िरी जगह '+ago(last.t)+' की है' : 'Google Maps खुल रहा है — बारात की अभी की जगह तक'); }
+    var u='https://www.google.com/maps/dir/?api=1&destination='+t[0]+','+t[1]+'&travelmode=driving';
+    var w=null; try{ w=window.open(u,'_blank'); }catch(e){} if(!w) location.href=u;
+  });
 
   var cap=document.getElementById('mapcap'), dist=document.getElementById('mapdist'), last=null;
   function km(a,b){var R=6371,dLat=(b[0]-a[0])*Math.PI/180,dLng=(b[1]-a[1])*Math.PI/180,s=Math.sin(dLat/2)**2+Math.cos(a[0]*Math.PI/180)*Math.cos(b[0]*Math.PI/180)*Math.sin(dLng/2)**2;return 2*R*Math.asin(Math.sqrt(s));}
@@ -152,6 +158,7 @@
     fetch(DB+'/baraat/'+KEY+'/latest.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
       if(!d||!d.lat){ setCap('',false); return; }
       var stale=Date.now()-d.t>3*60*1000, first=!last; last=d;
+      if(navLink) navLink.href='https://www.google.com/maps/dir/?api=1&destination='+d.lat+','+d.lng+'&travelmode=driving';
       if(!d.off){ showRoute(); if(!night && q!=='day') setMode(true); }
       // live: the baraat doha replaces the waiting status; stopped: show status again
       var dh=document.getElementById('doha2'), wh=document.getElementById('where'), nt=document.getElementById('note');
