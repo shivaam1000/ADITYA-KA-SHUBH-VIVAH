@@ -5,7 +5,7 @@
   var HOME=[26.281493753195598,72.98599529580494], DHABA=[26.221253721138172,72.97233283694219], VENUE=[26.2224344,72.968648];
   var mapEl=document.getElementById('livemap'); if(!mapEl||!window.L) return;
 
-  var map=L.map('livemap',{zoomControl:false,attributionControl:false,scrollWheelZoom:false,maxZoom:16,minZoom:11});
+  var map=L.map('livemap',{zoomControl:false,attributionControl:false,scrollWheelZoom:false,maxZoom:18,minZoom:11});
   L.control.attribution({prefix:false,position:'bottomright'}).addTo(map); window.baraatMap=map;
   // day / night mode: night from 21 Nov 2026 17:00 IST, or whenever the baraat is live; ?mode=night|day forces
   var NIGHT_FROM=Date.UTC(2026,10,21,11,30,0), q=new URLSearchParams(location.search).get('mode');
@@ -66,7 +66,7 @@
   var trail=L.polyline([],{pane:'routePane',color:night?'#FFF3C4':'#5B6B2F',weight:5,opacity:.95,lineCap:'round'}).addTo(map); window.__trail=trail;
   var acc=L.circle(HOME,{pane:'routePane',radius:0,color:'#F2E3B3',weight:1,fillOpacity:.12});
   var follow=true, idleT=null;
-  function goBaraat(){ follow=true; if(last&&last.lat){ map.setView([last.lat,last.lng],Math.max(map.getZoom(),14)); } else { map.fitBounds(bounds,FIT); } }
+  function goBaraat(){ follow=true; if(last&&last.lat){ map.setView([last.lat,last.lng],Math.max(map.getZoom(),16)); } else { map.fitBounds(bounds,FIT); } }
   function armIdle(){ clearTimeout(idleT); idleT=setTimeout(function(){ if(!navOn) goBaraat(); },8000); }
   map.on('dragstart zoomstart',function(e){ if(e.originalEvent){ follow=false; armIdle(); } });
   map.on('dragend zoomend',function(){ if(!follow) armIdle(); });
@@ -154,6 +154,24 @@
   function setCap(txt,on){ if(cap){cap.textContent=txt; cap.className='mapcap'+(on?' on':'');} }
   if(!DB||!KEY){ setCap('',false); return; }
 
+  /* 21 Nov: baraat abhi kis sadak par hai - shabdon me. Naam Firebase me baant lete hain taaki har phone alag se na poochhe. */
+  var placeEl=null, placeAt=null, placeBusy=false;
+  function showPlace(name){ try{ if(!placeEl){ if(!dist||!dist.parentNode) return; placeEl=document.createElement(dist.tagName||'p'); placeEl.id='mapplace'; placeEl.className=dist.className; placeEl.style.fontSize='17px'; placeEl.style.marginTop='4px'; dist.parentNode.insertBefore(placeEl, dist.nextSibling); } placeEl.textContent = name ? '📍 अभी यहाँ: '+name : ''; placeEl.hidden=!name; }catch(e){} }
+  function nicePlace(f){ var road=(f.text||'').trim(), first=((f.place_name||'').split(',')[0]||'').trim(), extra=first.replace(road,'').trim(), tc=function(s){ return s.replace(/(^|\s)([a-z])/g,function(m,a,b){ return a+b.toUpperCase(); }); }; if(!road||road==='-') return ''; return tc(road)+(extra ? ' · '+tc(extra) : ''); }
+  function updatePlace(d){ try{
+    if(!MT||placeBusy) return; var p=[d.lat,d.lng];
+    if(placeAt && km(placeAt,p)<0.12) return;
+    placeBusy=true;
+    fetch(DB+'/baraat/'+KEY+'/place.json?t='+Date.now(),{cache:'no-store'}).then(function(r){ return r.json(); }).then(function(s){
+      if(s&&s.name&&km([s.lat,s.lng],p)<0.12){ placeAt=[s.lat,s.lng]; showPlace(s.name); placeBusy=false; return; }
+      return fetch('https://api.maptiler.com/geocoding/'+d.lng.toFixed(5)+','+d.lat.toFixed(5)+'.json?key='+MT).then(function(r){ return r.json(); }).then(function(j){
+        var fs=(j&&j.features)||[], f=null, i, ty;
+        for(i=0;i<fs.length;i++){ ty=fs[i].place_type||[]; if(ty.indexOf('address')>=0||ty.indexOf('road')>=0){ f=fs[i]; break; } }
+        var name=f?nicePlace(f):''; placeAt=p; showPlace(name); placeBusy=false;
+        if(name) fetch(DB+'/baraat/'+KEY+'/place.json',{method:'PUT',body:JSON.stringify({lat:d.lat,lng:d.lng,name:name,t:Date.now()})}).catch(function(){});
+      });
+    }).catch(function(){ placeBusy=false; });
+  }catch(e){ placeBusy=false; } }
   var wh0=document.getElementById('where'), whHTML=wh0?wh0.innerHTML:'', whCls=wh0?wh0.className:'';
   function poll(){
     fetch(DB+'/baraat/'+KEY+'/latest.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json();}).then(function(d){
@@ -170,7 +188,8 @@
       var toVenue=km([d.lat,d.lng],VENUE);
       if(dist) dist.textContent = toVenue<0.12 ? 'बारात विवाह स्थल पर पहुँच गई है' : 'विवाह स्थल से '+(toVenue<1? Math.round(toVenue*1000)+' मीटर' : toVenue.toFixed(1)+' km')+' दूर';
       setCap(d.off ? (km([d.lat,d.lng],HOME)<0.3 ? 'लाइव लोकेशन बारात प्रस्थान पर शुरू होगी' : (toVenue<0.3 ? '' : 'ट्रैकिंग रुकी हुई है · आख़िरी स्थिति '+ago(d.t))) : (stale ? 'सिग्नल नहीं मिल रहा · आख़िरी स्थिति '+ago(d.t) : 'बारात लाइव · '+ago(d.t)), !d.off && !stale);
-      if(follow){ if(first) map.setView([d.lat,d.lng],14); else map.panTo([d.lat,d.lng],{animate:true}); }
+      try{ document.body.classList.toggle('blive', !d.off); if(d.off) showPlace(''); else updatePlace(d); }catch(e){}
+      if(follow){ if(first) map.setView([d.lat,d.lng],16); else map.panTo([d.lat,d.lng],{animate:true}); }
     }).catch(function(){});
   }
   function pollTrail(){
