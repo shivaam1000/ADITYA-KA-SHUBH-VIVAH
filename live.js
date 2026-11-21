@@ -9,7 +9,7 @@
   L.control.attribution({prefix:false,position:'bottomright'}).addTo(map); window.baraatMap=map;
   // day / night mode: night from 21 Nov 2026 17:00 IST, or whenever the baraat is live; ?mode=night|day forces
   var NIGHT_FROM=Date.UTC(2026,10,21,11,30,0), q=new URLSearchParams(location.search).get('mode');
-  var night = q==='night' ? true : q==='day' ? false : Date.now()>=NIGHT_FROM;
+  var night = true;   /* sirf night mode */
   var ATTR='&copy; OpenStreetMap &copy; CARTO';
   // tile source: MapTiler (key in config.js) with ?style= override; falls back to CARTO
   var MT=CFG.maptiler||'', STYLE=new URLSearchParams(location.search).get('style')||'';
@@ -33,7 +33,7 @@
   setMode(night);
   var modeBtn=document.getElementById('modebtn');
   function paintModeBtn(){ if(modeBtn) modeBtn.textContent=night?'☀️':'🌙'; }
-  if(modeBtn){ modeBtn.addEventListener('click',function(e){ e.stopPropagation(); setMode(!night); paintModeBtn(); }); paintModeBtn(); }
+  if(modeBtn){ modeBtn.style.display='none'; }   /* day/night toggle hata diya */
   
   function pin(img,label,side,big){var w=big?62:54,h=Math.round(w*1.15);
     var L1='<img class="pinimg" src="assets/'+img+'" width="'+w+'" height="'+h+'" alt="">',L2='<div class="pinlbl">'+label+'</div>';var html,size,anc;
